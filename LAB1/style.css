@@ -1,0 +1,142 @@
+body {
+  min-height: 100vh;
+  margin: 30px;
+}
+
+#top {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+canvas {
+  flex: 1;
+  border: 1px solid black;
+}
+
+
+#representations {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  height: 300px;
+}
+
+.representation {
+  -webkit-box-shadow: 5px 5px 30px -10px rgba(0,0,0,0.77);
+  -moz-box-shadow: 5px 5px 30px -10px rgba(0,0,0,0.77);
+  box-shadow: 5px 5px 30px -10px rgba(0,0,0,0.77);
+  flex: 1;
+  /* border: 1px solid black; */
+}
+
+.representation-title {
+  text-align: center;
+}
+
+.representation-content {
+  font-size: 1.1em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* NAV */
+
+#panels {
+  width: 400px;
+  height: 460px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+nav > button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  flex: 1;
+  outline: none;
+  border: 2px solid rgb(206, 191, 191);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.active-button {
+  background-color: rgb(61, 143, 54);
+  border: 2px solid rgb(61, 143, 54);
+  color: white;
+}
+
+.panel {
+  display: none;
+  flex-direction: column;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.open-panel {
+  display: flex;
+}
+
+
+
+
+
+
+#load-data-panel div {
+  display: flex;
+  justify-content: space-between;
+}
+
+#load-data-panel p {
+  flex: 3;
+  color: red;
+}
+
+#load-data-panel button {
+  background-color: rgb(61, 143, 54);
+  border: 2px solid rgb(61, 143, 54);
+  padding: 10px 20px;
+  font-size: 1rem;
+  flex: 1;
+  outline: none;
+  color: white;
+}
+
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+form label {
+  display: flex;
+  justify-content: space-between;
+}
+
+form input {
+  width: 200px;
+}

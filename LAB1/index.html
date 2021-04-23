@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./style.css">
+  <title>Document</title>
+</head>
+<body>
+  <section id="top">
+    <div id="panels">
+      <nav>
+        <button id="load-data-nav-btn" class="active-button">Load data</button>
+        <button id="generate-random-nav-btn">Generate randomly</button>
+      </nav>
+      <div id="load-data-panel" class="panel open-panel">
+        <textarea id="programInput" cols="40" rows="20"></textarea>
+        <div>
+          <p id="error-message"></p>
+          <button>draw</button>
+        </div>
+      </div>
+      <div id="generate-random-panel" class="panel">
+        <form name="form1">
+          <label>
+            label 1
+            <input type="number" name="field1" required>
+          </label>
+          <label>
+            label 2
+            <input type="number" name="field2" required>
+          </label>
+          <button type="submit">Generate random</button>
+        </form>
+        <hr>
+        <form name="form2">
+          <label>
+            label 1
+            <input type="number" name="field3" required>
+          </label>
+          <label>
+            label 2
+            <input type="number" name="field4" required>
+          </label>
+          <button type="submit">Generate random</button>
+        </form>
+      </div>
+    </div>
+    <canvas id="chart" width="500" height="500"></canvas>
+  </section>
+  <sectiion id="representations">
+    <article class="representation">
+      <h3 class="representation-title">Adjacency Matrix</h3>
+      <p id="adjacenty-matrix" class="epresentation-content"></p>
+    </article>
+    <article class="representation">
+      <h3 class="representation-title">Adjacency List</h3>
+      <p id="adjacenty-list" class="epresentation-content"></p>
+    </article>
+    <article class="representation">
+      <h3 class="representation-title">Incidence Matrix</h3>
+      <p id="incidence-matrix" class="epresentation-content"></p>  
+    </article>
+  </sectiion>
+  <script src="./ui.js"></script>
+  <script src="./representations.js"></script>
+</body>
+</html>
