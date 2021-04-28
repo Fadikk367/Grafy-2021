@@ -15,52 +15,54 @@
         <button id="generate-random-nav-btn">Generate randomly</button>
       </nav>
       <div id="load-data-panel" class="panel open-panel">
-        <textarea id="programInput" cols="40" rows="20"></textarea>
-        <div>
-          <p id="error-message"></p>
-          <button>draw</button>
-        </div>
+        <form name="form0">
+          <textarea id="programInput" cols="40" rows="20"></textarea>
+          <div>
+            <p id="error-message"></p>
+            <button type="submit">draw</button>
+          </div>
+        </form>
       </div>
       <div id="generate-random-panel" class="panel">
         <form name="form1">
           <label>
-            label 1
-            <input type="number" name="field1" required>
+            Vertexes
+            <input type="number" name="vertexes" id="field1" required>
           </label>
           <label>
-            label 2
-            <input type="number" name="field2" required>
+            Edges
+            <input type="number" name="edges" id="field2" required>
           </label>
-          <button type="submit">Generate random</button>
+          <button type="submit" id="drawBtn">Generate random</button>
         </form>
         <hr>
         <form name="form2">
           <label>
-            label 1
-            <input type="number" name="field3" required>
+            Vertexes
+            <input type="number" name="vertexes" required>
           </label>
           <label>
-            label 2
-            <input type="number" name="field4" required>
+            Edge probability
+            <input name="probability" required>
           </label>
           <button type="submit">Generate random</button>
         </form>
       </div>
     </div>
-    <canvas id="chart" width="500" height="500"></canvas>
+    <canvas id="chart"></canvas>
   </section>
   <sectiion id="representations">
     <article class="representation">
       <h3 class="representation-title">Adjacency Matrix</h3>
-      <p id="adjacenty-matrix" class="epresentation-content"></p>
+      <p id="adjacenty-matrix" class="representation-content"></p>
     </article>
     <article class="representation">
       <h3 class="representation-title">Adjacency List</h3>
-      <p id="adjacenty-list" class="epresentation-content"></p>
+      <p id="adjacenty-list" class="representation-content"></p>
     </article>
     <article class="representation">
       <h3 class="representation-title">Incidence Matrix</h3>
-      <p id="incidence-matrix" class="epresentation-content"></p>  
+      <p id="incidence-matrix" class="representation-content"></p>  
     </article>
   </sectiion>
   <script src="./ui.js"></script>

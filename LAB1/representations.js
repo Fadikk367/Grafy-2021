@@ -6,6 +6,8 @@ const adjListBox = document.getElementById('adjacenty-list');
 const incMatrixBox = document.getElementById('incidence-matrix');
 const btn = document.querySelector('button');
 
+let canvas = document.getElementById('chart');
+
 const REPRESENTATION_TYPES = {
   ADJACENCY_MATRIX: 'ADJACENCY_MATRIX',
   ADJACENCY_LIST: 'ADJACENCY_LIST',
@@ -18,9 +20,11 @@ const convertionStrategiesByRepresentationTypes = new Map([
   [REPRESENTATION_TYPES.INCIDENCE_MATRIX, convertFromIncidenceMatrix]
 ]);
 
-console.log(convertionStrategiesByRepresentationTypes)
 
-programInput.addEventListener('input', () => {
+
+document.form0.addEventListener('submit', e => {
+  e.preventDefault();
+
   const rows = programInput.value.split('\n');
   errorMessageBox.textContent = '';
 
@@ -51,8 +55,8 @@ function determineInputRepresentationType(rows) {
 function convertFromAdjacencyMatrix(rows) {
   const adjacencyMatrix = rows.map(row => row.split(' ').map(item => parseInt(item, 10)));
   const incidenceMatrix = GraphRepresentationConverter.adjMatrixToIncidenceMatrix(adjacencyMatrix);
-  const adjacencyList = GraphRepresentationConverter.incidenceMatrixToAdjList(incidenceMatrix);
-
+  const adjacencyList = GraphRepresentationConverter.adjMatrixToAdjList(adjacencyMatrix);
+  console.log(adjacencyMatrix);
   draw(adjacencyMatrix);
   printRepresentations(adjacencyMatrix, adjacencyList, incidenceMatrix)
 }
@@ -87,7 +91,7 @@ class GraphRepresentationConverter {
     const adjacencyList = {};
 
     adjacencyMatrix.map((row, i) => {
-      adjacentVertexes = []
+      const adjacentVertexes = []
       
       for (let j = 0; j < row.length; j++) {
         if (row[j] === 1) {
@@ -97,14 +101,14 @@ class GraphRepresentationConverter {
   
       adjacencyList[i] = adjacentVertexes;
     });
-
+    
     return adjacencyList;
   }
 
   static adjMatrixToIncidenceMatrix(adjacencyMatrix) {
     let incidenceMatrix = [];
+
     adjacencyMatrix.map((row, i) => {
-      
       for (let j = i+1; j < row.length; j++) {
         if (row[j] === 1) {
           const edge = new Array(row.length).fill(0);
@@ -115,7 +119,7 @@ class GraphRepresentationConverter {
       }
       
     });
-  
+
     return transposeMatrix(incidenceMatrix);
   }
 
@@ -156,7 +160,7 @@ class GraphRepresentationConverter {
   }
 
   static adjListToAdjMatrix(adjList) {
-    console.log(adjList);
+    // console.log(adjList);
     let matrixDimenstion = Object.keys(adjList).length;
     let adjacencyMatrix = createEmptyMatrix(matrixDimenstion, matrixDimenstion);
   
@@ -173,13 +177,15 @@ class GraphRepresentationConverter {
 function transposeMatrix(matrix) {
   const transposedMatrix = [];
 
-  for (let i = 0; i < matrix[0].length; i++) {
-    transposedMatrix.push([]);
-  }
-
-  for (let i = 0; i < matrix.length; i++) {
-    for (let j = 0; j < matrix[0].length; j++) {
-      transposedMatrix[j][i] = matrix[i][j];
+  if (matrix.length) {
+    for (let i = 0; i < matrix[0].length; i++) {
+      transposedMatrix.push([]);
+    }
+  
+    for (let i = 0; i < matrix.length; i++) {
+      for (let j = 0; j < matrix[0].length; j++) {
+        transposedMatrix[j][i] = matrix[i][j];
+      }
     }
   }
 
@@ -189,7 +195,11 @@ function transposeMatrix(matrix) {
 
 function isAdjacencyMatrix(inputRows) {
   const rowsCount = inputRows.length;
-  let result = true;
+  let result = isMatrixBuiltOfZerosAndOnesOnly(inputRows);
+
+  if (calculateMatrixTrace(inputRows) !== 0) {
+    result = false;
+  }
 
   for (const row of inputRows) {
     if (row.length !== rowsCount) {
@@ -212,14 +222,14 @@ function createEmptyMatrix(n, m) {
   for (let i = 0; i < n; i++) {
     matrix.push(new Array(m).fill(0));
   }
-  console.log(matrix);
+  // console.log(matrix);
   return matrix;
 }
 
 function isIncidenceMatrix(inputRows) {
   const rowsCount = inputRows.length;
   const rowsLength = inputRows[0].length;
-  let result = true;
+  let result = isMatrixBuiltOfZerosAndOnesOnly(inputRows);
 
   for (const row of inputRows) {
     if (row.length !== rowsLength) {
@@ -231,15 +241,15 @@ function isIncidenceMatrix(inputRows) {
   if (result) {
     for (let i = 0; i < rowsLength; i++) {
       let oneOccurances = 0;
-      // console.log('kolumna: ' + i)
+      console.log('kolumna: ' + i)
       for (let j = 0; j < rowsCount; j++) {
-        // console.log(inputRows[j][i]);
+        console.log(inputRows[j][i]);
         if (inputRows[j][i] == 1) {
           oneOccurances++;
         }
       }
 
-      // console.log('jedynek: ' + oneOccurances)
+      console.log('jedynek: ' + oneOccurances)
       if (oneOccurances !== 2) {
         result = false;
         break;
@@ -251,28 +261,41 @@ function isIncidenceMatrix(inputRows) {
 }
 
 function isAdjacencyList(rows) {
-  return rows.every(hasRowDotInFirstItem);
+
+  return (
+    rows.every(hasRowDotInFirstItem) && 
+    doesConnectedVertexesContainSeccondVertexInList(
+      rows
+        .map(row => row.substring(row.indexOf('.') + 1).trim())
+        .map(row => row.split(' ').map(item => parseInt(item, 10)))
+    )
+  );
 
   function hasRowDotInFirstItem(row) {
     return row.includes('.')
+  }
+
+  function doesConnectedVertexesContainSeccondVertexInList(rows) {
+    const mat = GraphRepresentationConverter.adjListToAdjMatrix(rows);
+    return isEqualMatrix(mat, transposeMatrix(mat));
   }
 }
 
 function isEqualMatrix(first, seccond) {
   if (first.length !== seccond.length) {
-    console.log('1 wymiar neizgodny')
+    // console.log('1 wymiar neizgodny')
     return false;
   }
 
   if (first[0].length !== seccond[0].length) {
-    console.log('drugi wymiar neizgodny')
+    // console.log('drugi wymiar neizgodny')
     return false;
   }
 
   for (let i = 0; i < first.length; i++) {
     for (let j = 0; j < first[0].length; j++) {
       if (first[i][j] !== seccond[i][j]) {
-        console.log('elementy niezgodne')
+        // console.log('elementy niezgodne')
         return false;
       }
     }
@@ -280,6 +303,32 @@ function isEqualMatrix(first, seccond) {
 
   return true;
 }
+
+function isMatrixBuiltOfZerosAndOnesOnly(matrix) {
+  let result = true;
+
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix[i].length; j++) {
+      if (matrix[i][j] != 0 && matrix[i][j] != 1) {
+        result = false;
+        break;
+      }
+    }
+  }
+
+  return result;
+}
+
+function calculateMatrixTrace(matrix) {
+  let trace = 0;
+
+  for (let i = 0; i < matrix.length; i++) {
+    trace += matrix[i][i];
+  }
+
+  return trace;
+}
+
 
 function convertInputToAdjList(rows) {
   const adjacencyList = {};
@@ -328,18 +377,19 @@ function printIncidenceMatrix(incMatrix) {
 }
 
 
-
+canvas.width = canvas.offsetWidth;
+canvas.height = canvas.offsetHeight;
 
 
 
 function draw(matrix) {
-  let canvas = document.getElementById('chart');
 
   if (canvas.getContext) {
-      for(let i = 0; i < matrix.length; i++){
-          if(matrix.length != matrix[i].length) throw new Error('Invalid matrix dimensions!');
-      }
-      let ctx = canvas.getContext('2d');
+    for(let i = 0; i < matrix.length; i++){
+      if(matrix.length != matrix[i].length) throw new Error('Invalid matrix dimensions!');
+    }
+    let ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
       let n = matrix.length;
       let R = 0.4 * canvas.height;
       let coords = [];
@@ -369,7 +419,132 @@ function draw(matrix) {
           ctx.strokeStyle = "blue";
           ctx.stroke();
           ctx.fillStyle = "black";
-          ctx.fillText(i+1, coords[i].x - 5, coords[i].y + 7);
+          const offset = (i+1).toString().length*6;
+          ctx.fillText(i+1, coords[i].x - offset, coords[i].y + 7);
       }
   }
 }
+
+
+
+
+
+
+function randomNumber(min, max){
+  const r = Math.random()*(max-min) + min
+  return Math.floor(r)
+}
+
+function generateRandomMatrixWithEdges(n, l) {
+//walidacja czy można zbudować graf
+if (l > (n*n-n)/2) {
+  throw new Error('Za dużo');
+}
+
+l = parseInt(l);
+  n = parseInt(n);
+let matrix = [];
+for (let i=0; i<n; i++){
+  matrix[i]=[];
+      for (let j=0; j<n; j++){
+          matrix[i][j] = 0;
+  }
+}
+  while (l > 0) {
+    let rand_i = randomNumber(0, n);
+    let rand_j = randomNumber(rand_i, n);
+    // console.log(rand_i, rand_j, l);
+
+    if (rand_j != rand_i) {
+      if (matrix[rand_i][rand_j] == 0) {
+        matrix[rand_i][rand_j] = 1;
+        l -= 1;
+      }
+    }
+  }
+
+  for (let i=0; i<n; i++){
+  for (let j=0; j<(n-i); j++){
+          matrix[j + i][i] = matrix[i][j + i];
+  }
+}
+//macierz sąsiedztwa
+  return matrix;
+}
+
+function generateRandomMatrixWithProbability(n, p){
+  n = parseInt(n);
+  p = parseFloat(p);
+
+  // validate if given probability is within correct range
+  if (p < 0 && p > 1) {
+    throw new Error('Ivalid probability');
+  }
+
+  let matrix = [];
+  for (let i=0; i<n; i++) {
+    matrix[i] = [];
+    for (let j=0; j<n; j++) {
+      matrix[i][j] = 0;
+    }
+  }
+
+  for (let i=0; i<n; i++) {
+    for (let j=0; j<(n-i); j++) {
+      let r=Math.random();
+      if (r<=p) {
+        matrix[i][j + i] = 1;
+      }
+    matrix[i][i] = 0;
+    }
+  }
+
+  for (let i=0; i<n; i++) {
+    for (let j=0; j<(n-i); j++) {
+      matrix[j + i][i] = matrix[i][j + i];
+    }
+  }
+  //macierz sasiedztwa
+  return matrix;
+}
+
+
+
+
+
+document.form1.addEventListener('submit', e => {
+  e.preventDefault();
+
+  const matrixDimenstin = parseInt(document.form1.vertexes.value);
+  const edgesCount = parseInt(document.form1.edges.value);
+
+  console.log({ matrixDimenstin, edgesCount });
+
+  try {
+    const adjMatrix = generateRandomMatrixWithEdges(matrixDimenstin , edgesCount);
+    const adjMatrixStr = adjMatrix.map(row => row.join(" "));
+    convertFromAdjacencyMatrix(adjMatrixStr);
+  } catch(err) {
+    errorMessageBox.textContent = err.message;
+  }
+});
+
+
+
+document.form2.addEventListener('submit', e => {
+  e.preventDefault();
+  
+  const matrixDimenstin = parseInt(document.form2.vertexes.value);
+  const probability = parseFloat(document.form2.probability.value);
+
+  console.log({ matrixDimenstin, probability });
+  
+  try {
+    const adjMatrix = generateRandomMatrixWithProbability(matrixDimenstin, probability);
+    const adjMatrixStr = adjMatrix.map(row => row.join(" "));
+    convertFromAdjacencyMatrix(adjMatrixStr);
+  } catch(err) {
+    console.log(err);
+    errorMessageBox.textContent = err.message;
+  }
+})

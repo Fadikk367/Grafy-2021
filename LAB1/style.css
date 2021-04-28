@@ -19,7 +19,7 @@ canvas {
   display: flex;
   justify-content: space-between;
   gap: 30px;
-  height: 300px;
+  min-height: 300px;
 }
 
 .representation {
@@ -27,14 +27,25 @@ canvas {
   -moz-box-shadow: 5px 5px 30px -10px rgba(0,0,0,0.77);
   box-shadow: 5px 5px 30px -10px rgba(0,0,0,0.77);
   flex: 1;
+  
   /* border: 1px solid black; */
 }
 
 .representation-title {
   text-align: center;
+  margin: 0;
+  padding: 15px;
+  background-color: rgb(230, 230, 230);
 }
 
 .representation-content {
+  font-size: 1em;
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+}
+
+.representation-content div {
   font-size: 1.1em;
 }
 
@@ -60,9 +71,13 @@ canvas {
 
 /* NAV */
 
+#top {
+  height: 600px;
+}
+
 #panels {
   width: 400px;
-  height: 460px;
+  min-height: 460px;
 }
 
 nav {
