@@ -124,7 +124,7 @@ nav > button {
   justify-content: space-between;
 }
 
-#load-data-panel p {
+#error-message {
   flex: 3;
   color: red;
 }

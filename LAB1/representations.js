@@ -25,7 +25,7 @@ const convertionStrategiesByRepresentationTypes = new Map([
 document.form0.addEventListener('submit', e => {
   e.preventDefault();
 
-  const rows = programInput.value.split('\n');
+  const rows = programInput.value.trim().split('\n');
   errorMessageBox.textContent = '';
 
   try {
@@ -34,6 +34,7 @@ document.form0.addEventListener('submit', e => {
 
     convertionStrategy(rows);
   } catch(err) {
+    clearCanvas();
     errorMessageBox.textContent = err.message;
   }
 });
@@ -48,7 +49,7 @@ function determineInputRepresentationType(rows) {
   } else if (isIncidenceMatrix(cells)) {
     return REPRESENTATION_TYPES.INCIDENCE_MATRIX;
   } else {
-    throw new Error('Unsupported representation structure!');
+    throw new Error('Invalid representation structure!');
   }
 }
 
@@ -56,7 +57,7 @@ function convertFromAdjacencyMatrix(rows) {
   const adjacencyMatrix = rows.map(row => row.split(' ').map(item => parseInt(item, 10)));
   const incidenceMatrix = GraphRepresentationConverter.adjMatrixToIncidenceMatrix(adjacencyMatrix);
   const adjacencyList = GraphRepresentationConverter.adjMatrixToAdjList(adjacencyMatrix);
-  console.log(adjacencyMatrix);
+
   draw(adjacencyMatrix);
   printRepresentations(adjacencyMatrix, adjacencyList, incidenceMatrix)
 }
@@ -160,7 +161,6 @@ class GraphRepresentationConverter {
   }
 
   static adjListToAdjMatrix(adjList) {
-    // console.log(adjList);
     let matrixDimenstion = Object.keys(adjList).length;
     let adjacencyMatrix = createEmptyMatrix(matrixDimenstion, matrixDimenstion);
   
@@ -350,7 +350,7 @@ function printAdjList(adjList) {
   let result = ``;
 
   for (const [vertex, neighbours] of Object.entries(adjList)) {
-    result += `<div>(${vertex}) => [${neighbours.join(',')}]</div>`;
+    result += `<div>${vertex}. ${neighbours.join(' ')}</div>`;
   }
 
   adjListBox.innerHTML = result;
@@ -425,7 +425,10 @@ function draw(matrix) {
   }
 }
 
-
+function clearCanvas() {
+  let ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
 
 
 
@@ -437,8 +440,12 @@ function randomNumber(min, max){
 
 function generateRandomMatrixWithEdges(n, l) {
 //walidacja czy można zbudować graf
-if (l > (n*n-n)/2) {
-  throw new Error('Za dużo');
+const edgesLimit = (n*n-n) / 2
+if (l > edgesLimit) {
+  throw new Error(`
+    Cannot generate that much edgaes for this number of vertexes.
+    For ${n} vertexes max ${edgesLimit} edges allowed.
+  `);
 }
 
 l = parseInt(l);
@@ -477,8 +484,8 @@ function generateRandomMatrixWithProbability(n, p){
   p = parseFloat(p);
 
   // validate if given probability is within correct range
-  if (p < 0 && p > 1) {
-    throw new Error('Ivalid probability');
+  if (p < 0 || p > 1) {
+    throw new Error('Ivalid probability (p: [0, 1])');
   }
 
   let matrix = [];
@@ -514,17 +521,17 @@ function generateRandomMatrixWithProbability(n, p){
 
 document.form1.addEventListener('submit', e => {
   e.preventDefault();
+  errorMessageBox.textContent = '';
 
   const matrixDimenstin = parseInt(document.form1.vertexes.value);
   const edgesCount = parseInt(document.form1.edges.value);
-
-  console.log({ matrixDimenstin, edgesCount });
 
   try {
     const adjMatrix = generateRandomMatrixWithEdges(matrixDimenstin , edgesCount);
     const adjMatrixStr = adjMatrix.map(row => row.join(" "));
     convertFromAdjacencyMatrix(adjMatrixStr);
   } catch(err) {
+    clearCanvas();
     errorMessageBox.textContent = err.message;
   }
 });
@@ -533,18 +540,17 @@ document.form1.addEventListener('submit', e => {
 
 document.form2.addEventListener('submit', e => {
   e.preventDefault();
+  errorMessageBox.textContent = '';
   
   const matrixDimenstin = parseInt(document.form2.vertexes.value);
   const probability = parseFloat(document.form2.probability.value);
-
-  console.log({ matrixDimenstin, probability });
   
   try {
     const adjMatrix = generateRandomMatrixWithProbability(matrixDimenstin, probability);
     const adjMatrixStr = adjMatrix.map(row => row.join(" "));
     convertFromAdjacencyMatrix(adjMatrixStr);
   } catch(err) {
-    console.log(err);
+    clearCanvas();
     errorMessageBox.textContent = err.message;
   }
 })

@@ -17,21 +17,18 @@
       <div id="load-data-panel" class="panel open-panel">
         <form name="form0">
           <textarea id="programInput" cols="40" rows="20"></textarea>
-          <div>
-            <p id="error-message"></p>
-            <button type="submit">draw</button>
-          </div>
+          <button type="submit">draw</button>
         </form>
       </div>
       <div id="generate-random-panel" class="panel">
         <form name="form1">
           <label>
             Vertexes
-            <input type="number" name="vertexes" id="field1" required>
+            <input type="number" name="vertexes" id="field1" min="1" required>
           </label>
           <label>
             Edges
-            <input type="number" name="edges" id="field2" required>
+            <input type="number" name="edges" id="field2" min="0" required>
           </label>
           <button type="submit" id="drawBtn">Generate random</button>
         </form>
@@ -39,7 +36,7 @@
         <form name="form2">
           <label>
             Vertexes
-            <input type="number" name="vertexes" required>
+            <input type="number" name="vertexes" min="1" required>
           </label>
           <label>
             Edge probability
@@ -48,6 +45,7 @@
           <button type="submit">Generate random</button>
         </form>
       </div>
+      <p id="error-message"></p>
     </div>
     <canvas id="chart"></canvas>
   </section>
