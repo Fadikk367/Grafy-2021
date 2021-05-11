@@ -5,6 +5,7 @@ import random
 from typing import List, Set, Dict
 
 
+
 class Node:
     id: int
     is_visited: bool
@@ -204,4 +205,6 @@ if __name__ == "__main__":
 
     # for node in adj_list.list:
     #     print(str(node) + str([str(n) for n in adj_list.list[node]]))
+
+    print(Alg.count_odds([1, 1, 2, 4, 5]))
 
