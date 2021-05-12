@@ -125,10 +125,10 @@ class Graph:
         return edge in self.edges
 
     def randomize(self, permutations=5):
-        # iter = 0
         for i in range(permutations):
-            while True:
-                # iter += 1
+            it = 100
+            while it > 0:
+                it -= 1
                 (edge_a, edge_b) = random.sample(self.edges, 2)
                 # print(f"\n{iter}) selected edges:")
                 # print(str(edge_a) + ", " + str(edge_b))
@@ -151,9 +151,6 @@ class Graph:
                 # print("Is second edge duplicated:")
                 # print(self.has_edge(new_edge_b))
 
-                # if iter > 5:
-                #     break
-
                 if are_edges_separated and are_new_edges_not_duplicated:
                     self.remove_edge(edge_a)
                     self.remove_edge(edge_b)
@@ -162,6 +159,9 @@ class Graph:
                     self.add_edge(new_edge_b)
 
                     break
+
+            if it == 0:
+                raise Exception('Graph cannot be randomized')
 
     @staticmethod
     def hamiltonian_cycle(graph, v=None, cycle=None):
@@ -211,6 +211,51 @@ class AdjacencyList:
 
     def get_neighbours(self, node_id):
         return [node.id for node in self.list[node_id]]
+
+    def remove_edge(self, edge: Edge):
+        (first_node, second_node) = edge.nodes
+        for i, key in enumerate(self.list[first_node.id]):
+            if key == second_node:
+                self.list[first_node.id].pop(i)
+        for i, key in enumerate(self.list[second_node.id]):
+            if key == first_node:
+                self.list[second_node.id].pop(i)
+
+    def add_edge(self, edge: Edge):
+        (first_node, second_node) = edge.nodes
+        self.list[first_node.id].append(second_node)
+        self.list[second_node.id].append(first_node)
+
+    def DFSCount(self, node1, visited):
+        count = 1
+        visited[node1.id] = True
+        for i in self.list[node1.id]:
+            if visited[i.id] == False:
+                count += self.DFSCount(i, visited)
+        return count
+
+    def isValidNextEdge(self, node1, node2):
+        if len(self.list[node1.id]) == 1:
+            return True
+        else:
+            visited = [False]*len(self.list)
+            count1 = self.DFSCount(node1, visited)
+            self.remove_edge(Edge(node1, node2))
+            visited = [False]*len(self.list)
+            count2 = self.DFSCount(node1, visited)
+            self.add_edge(Edge(node1, node2))
+            return count1 <= count2
+
+    def find_euler_path(self, node1, result=None):
+        if result is None:
+            result = []
+        for node2 in self.list[node1.id]:
+            if self.isValidNextEdge(node1, node2):
+                result.append(f"({node1.id}-{node2.id})")
+                self.remove_edge(Edge(node1, node2))
+                self.find_euler_path(node2, result)
+
+        return ", ".join(result)
 
 
 class AdjacencyMatrix:

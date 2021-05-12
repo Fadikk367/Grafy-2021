@@ -1,5 +1,6 @@
 class DataTypes:
     ADJ_MATRIX = ['--am']
+    PLAIN = ['--plain']
     ADJ_LIST = ['--al']
     INC_MATRIX = ['--im']
     ALL_MATRIXES = ['--am', '--im', '--al']

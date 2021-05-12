@@ -51,7 +51,6 @@ class ConsoleInterface:
             return
         else:
             tokens = command.split(' ')
-
             if len(tokens) < 5:
                 raise TooFewArguments('Too few arguments provided!')
 
@@ -67,4 +66,5 @@ class ConsoleInterface:
             dest_type = out_args.pop(0)
 
             strategy = self.operations[operation]
+
             strategy.run(src_type, inp_args, dest_type, out_args, resolver_args)

@@ -1,4 +1,5 @@
 def console_printer(result, _):
+    print()
     print(result)
 
 

@@ -1,5 +1,7 @@
-from grahps.Graph import Graph, AdjacencyMatrix
+from grahps.Graph import Graph, AdjacencyMatrix, AdjacencyList, Node
 from grahps.Algorithms import Algorithms
+
+from .regular import generate_random_regular_graph
 
 
 def hamilton_cycle_resolver(graph: Graph, args):
@@ -13,9 +15,13 @@ def hamilton_cycle_resolver(graph: Graph, args):
 
 def randomization_resolver(graph: Graph, args):
     permutations = int(args[0])
+    try:
+        graph.randomize(permutations)
+        return AdjacencyMatrix(graph)
+    except Exception:
+        return 'Graph cannot be randomized'
 
-    graph.randomize(permutations)
-    return AdjacencyMatrix(graph)
+
 
 
 def max_connected_comp_resolver(graph: Graph, args):
@@ -31,4 +37,32 @@ def max_connected_comp_resolver(graph: Graph, args):
     result += f"Largest component have an index of {max_component_index}\n"
     return result
 
+
+def create_random_eulerian_resolver(data, _):
+    nodes = int(data)
+
+    eulerian_graph = Algorithms.create_random_eulerian(nodes)
+    euler_cycle = AdjacencyList.find_euler_path(AdjacencyList(eulerian_graph), Node(0))
+    return euler_cycle
+
+
+def sequence_to_graph_resolver(sequence, _):
+    graph = Algorithms.degree_seq_to_graph(sequence)
+
+    if graph is None:
+        return "Given sequence does not represent a valid graph"
+
+    return AdjacencyMatrix(graph)
+
+
+def k_regular_graph_resolver(args, _):
+
+    [nodes, degree] = [int(num) for num in args.split(' ')]
+
+    result = generate_random_regular_graph(degree, nodes)
+    graph = Graph()
+    adj_matrix = AdjacencyMatrix(graph)
+    adj_matrix.matrix = result
+
+    return adj_matrix
 

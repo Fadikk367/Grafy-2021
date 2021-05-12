@@ -2,11 +2,19 @@ from console_interface.ConsoleInterface import ConsoleInterface
 from console_interface.OperationStrategy import OperationStrategy, build_options
 from console_interface.enums import DataTypes, DataSources, DataDestinations
 
-from LAB2.zad6 import hamilton_cycle_resolver, randomization_resolver, max_connected_comp_resolver
+from LAB2.zad6 import hamilton_cycle_resolver, randomization_resolver, max_connected_comp_resolver, \
+    create_random_eulerian_resolver, sequence_to_graph_resolver, k_regular_graph_resolver
 
 
 if __name__ == "__main__":
     operations = [
+        OperationStrategy('sequence',
+                          sequence_to_graph_resolver,
+                          'Builds a graph based on given sequence',
+                          build_options(
+                              [(DataSources.CONSOLE, DataTypes.SEQUENCE)]),
+                          build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX),
+                                         (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
         OperationStrategy('randomize',
                           randomization_resolver,
                           'Finds a hamiltonian cycle on a graph',
@@ -21,10 +29,24 @@ if __name__ == "__main__":
                               [(DataSources.FILE, DataTypes.ADJ_MATRIX)]),
                           build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX),
                                          (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
-        OperationStrategy('hamiltonian_cycle',
+        OperationStrategy('euler',
+                          create_random_eulerian_resolver,
+                          'Generates eulerian graph with given number of nodes',
+                          build_options(
+                              [(DataSources.FILE, DataTypes.PLAIN)]),
+                          build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX),
+                                         (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
+        OperationStrategy('k_regular',
+                          k_regular_graph_resolver,
+                          'Generates k regular graph with n nodes',
+                          build_options(
+                              [(DataSources.FILE, DataTypes.PLAIN)]),
+                          build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX),
+                                         (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
+        OperationStrategy('hamilton',
                           hamilton_cycle_resolver,
                           'Finds a hamiltonian cycle on a graph',
-                          build_options([(DataSources.FILE, DataTypes.ALL_MATRIXES), (DataSources.CONSOLE, DataTypes.SEQUENCE)]),
+                          build_options([(DataSources.FILE, DataTypes.ADJ_MATRIX), (DataSources.CONSOLE, DataTypes.SEQUENCE)]),
                           build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX), (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
     ]
 

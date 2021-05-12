@@ -23,3 +23,10 @@ def adjacency_list(filename):
 
     return data
 
+
+def plain(filename):
+    with open(filename) as f:
+        data = f.read()
+
+    return data
+

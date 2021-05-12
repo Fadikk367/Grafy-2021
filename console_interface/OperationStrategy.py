@@ -2,14 +2,15 @@ from copy import copy
 
 from .errors import *
 
-from .readers import adjacency_matrix, incidence_matrix, adjacency_list
+from .readers import adjacency_matrix, incidence_matrix, adjacency_list, plain
 from .printers import console_printer, file_printer, image_printer
 
 
 readers_map = {
     '--am': adjacency_matrix,
     '--im': incidence_matrix,
-    '--al': adjacency_list
+    '--al': adjacency_list,
+    '--plain': plain
 }
 
 output_targets = {
@@ -38,7 +39,7 @@ class OperationStrategy:
             filename = in_args[0]
             reader = readers_map[in_args[1]]
             data = reader(filename)
-        elif (src == '--console' or src == 'c-') and in_args[0] == '--gseq':
+        elif (src == '--console' or src == '-c') and in_args[0] == '--gseq':
             sequence = input('Enter number sequence:\n')
             data = [int(number) for number in sequence.split(' ')]
 
@@ -47,7 +48,7 @@ class OperationStrategy:
         printer = output_targets[dest]
         filename = 'CONSOLE'
 
-        if dest == '--file' or src == '-f':
+        if dest == '--file' or dest == '-f':
             filename = out_args[0]
 
         printer(result, filename)
@@ -78,9 +79,9 @@ class OperationStrategy:
                 if input_data_type not in self.supported_sources[src]:
                     raise UnsupportedDataType('This data type is not supported for console data source')
 
-        if dest == '--file' or src == '-f':
-            if len(out_args) < 1:
-                raise MissingDestinationArguments('Missing arguments in destination parameters')
+        # if dest == '--file' or src == '-f':
+        #     if len(out_args) < 1:
+        #         raise MissingDestinationArguments('Missing arguments in destination parameters')
 
 
 def build_options(options_tuples_list):
