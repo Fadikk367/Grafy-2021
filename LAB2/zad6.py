@@ -1,5 +1,5 @@
-from grahps.Graph import Graph, AdjacencyMatrix, AdjacencyList, Node
-from grahps.Algorithms import Algorithms
+from graphs.Graph import Graph, AdjacencyMatrix, AdjacencyList, Node
+from graphs.Algorithms import Algorithms
 
 from .regular import generate_random_regular_graph
 

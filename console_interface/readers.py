@@ -1,4 +1,4 @@
-from grahps.Graph import Graph
+from graphs.Graph import Graph
 
 
 def adjacency_matrix(filename):
