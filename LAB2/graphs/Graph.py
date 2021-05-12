@@ -140,15 +140,57 @@ class Graph:
 
 
 
+
 class AdjacencyList:
     def __init__(self, graph: Graph):
         self.list = {key.id: [] for key in graph.nodes}
-        print(self.list)
         for edge in graph.edges:
             (first_node, second_node) = edge.nodes
 
             self.list[first_node.id].append(second_node)
             self.list[second_node.id].append(first_node)
+
+    def remove_edge(self, edge: Edge):
+        (first_node, second_node) = edge.nodes
+        for i, key in enumerate(self.list[first_node.id]):
+            if key == second_node:
+                self.list[first_node.id].pop(i)
+        for i, key in enumerate(self.list[second_node.id]):
+            if key == first_node:
+                self.list[second_node.id].pop(i)
+
+    def add_edge(self, edge: Edge):
+        (first_node, second_node) = edge.nodes
+        self.list[first_node.id].append(second_node)
+        self.list[second_node.id].append(first_node)
+
+    def DFSCount(self, node1, visited):
+        count = 1
+        visited[node1.id] = True
+        for i in self.list[node1.id]:
+            if visited[i.id] == False:
+                count += self.DFSCount(i, visited)
+        return count
+
+    def isValidNextEdge(self, node1, node2):
+        if len(self.list[node1.id]) == 1:
+            return True
+        else:
+            visited = [False]*len(self.list)
+            count1 = self.DFSCount(node1, visited)
+            self.remove_edge(Edge(node1, node2))
+            visited = [False]*len(self.list)
+            count2 = self.DFSCount(node1, visited)
+            self.add_edge(Edge(node1, node2))
+            return count1 <= count2
+
+    def find_euler_path(self, node1):
+        for node2 in self.list[node1.id]:
+            if self.isValidNextEdge(node1, node2):
+                print("%d-%d " %(node1.id, node2.id)),
+                self.remove_edge(Edge(node1, node2))
+                self.find_euler_path(node2)
+
 
 
 class AdjacencyMatrix:
@@ -169,42 +211,4 @@ class AdjacencyMatrix:
             stringified += " ".join([str(i) for i in row]) + "\n"
 
         return stringified
-
-
-
-if __name__ == "__main__":
-    A = Node(0)
-    B = Node(1)
-    C = Node(2)
-    D = Node(3)
-    E = Node(4)
-    nodes = {A, B, C, D, E}
-
-    a = Edge(A, B)
-    b = Edge(A, C)
-    c = Edge(A, D)
-    d = Edge(A, E)
-    e = Edge(D, E)
-    edges = [a, b, c, d, e]
-
-    graph = Graph(edges, nodes)
-    print(AdjacencyMatrix(graph))
-
-    # adjacency_matrix = AdjacencyMatrix(graph)
-    # print(adjacency_matrix)
-    #
-    # restored = Graph.from_adjacency_matrix(adjacency_matrix)
-    # print(restored)
-    # graph.randomize(5)
-    # print(AdjacencyMatrix(graph))
-    adj_list = AdjacencyList(graph)
-
-    restored = Graph.from_adjacency_list(adj_list)
-
-    print(restored)
-
-    # for node in adj_list.list:
-    #     print(str(node) + str([str(n) for n in adj_list.list[node]]))
-
-    print(Alg.count_odds([1, 1, 2, 4, 5]))
 

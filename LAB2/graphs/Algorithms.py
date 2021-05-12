@@ -1,4 +1,6 @@
 from .Graph import *
+import random, copy
+
 
 class Algorithms:
 
@@ -33,6 +35,7 @@ class Algorithms:
 		return count
 
 
+	@staticmethod
 	def degree_seq_to_graph(Arr):
 		A = Arr.copy()
 		A.sort(reverse=True)
@@ -46,7 +49,87 @@ class Algorithms:
 					A[i] -= 1
 					A[j] -= 1
 					edges.append(Edge(nodes[i], nodes[j]))
-		return Graph(nodes, edges)
+		return Graph(edges, nodes)
 
 
+	@staticmethod
+	def pop_random_node(nodes):
+		if len(nodes) > 0:
+			node = random.choice(nodes)
+			if node is not None:
+				nodes.remove(node)
+			return node
+
+
+	@staticmethod
+	def pick_random_node(nodes):
+		node = random.choice(nodes)
+		return node
+
+
+	@staticmethod
+	def check_node(node1, nodes, cycle):
+		if node1 is None:
+			return None
+		try:
+			node2 = random.choice(nodes)
+		except IndexError:
+			return None
+		if (Edge(node1, node2) or Edge(node2, node1)) in cycle:
+			return None
+		if node2 is None:
+			return None
+		nodes.remove(node2)
+		cycle.append(Edge(node1, node2))
+		return node2
+
+
+	@staticmethod
+	def create_random_eulerian(n):
+		connected_nodes = []
+		unconnected_nodes = [Node(i) for i in range(n)]
+		cycle = []
+		node_degree = {}
+		node1 = Algorithms.pop_random_node(unconnected_nodes)
+		node2 = Algorithms.pop_random_node(unconnected_nodes)
+		connected_nodes.append(node1)
+		connected_nodes.append(node2)
+		cycle.append(Edge(node1, node2))
+		node_degree[node1] = 1
+		node_degree[node2] = 1
+		while len(unconnected_nodes) > 0:
+			node1 = Algorithms.pick_random_node(connected_nodes)
+			node2 = Algorithms.pop_random_node(unconnected_nodes)
+			connected_nodes.append(node2)
+			cycle.append(Edge(node1, node2))
+			node_degree[node1] += 1
+			node_degree[node2] = 1
+
+		odd_nodes = [i for i, v in node_degree.items() if v % 2 == 1]
+		even_nodes = [i for i, v in node_degree.items() if v % 2 == 0]
+		while len(odd_nodes) > 0:
+			node1 = Algorithms.pop_random_node(odd_nodes)
+			if node1 is not None:
+				node2 = Algorithms.check_node(node1, odd_nodes, cycle)
+			if node2 is not None:
+				even_nodes.append(node1)
+				even_nodes.append(node2)
+			else:
+				node2 = Algorithms.check_node(node1, even_nodes, cycle)
+				odd_nodes.append(node2)
+				even_nodes.append(node1)
+
+		return Graph(even_nodes, cycle)
+
+
+	@staticmethod
+	def create_random_eulerian2(n):
+		if n < 2:
+			return None
+		arr = [random.randrange(0, n+2, 2) for i in range(n)]
+		while not Algorithms.is_degree_seq(arr):
+			arr = [random.randrange(0, n+2, 2) for i in range(n)]
+			print(arr)
+		graph = Algorithms.degree_seq_to_graph(arr)
+		return graph
 

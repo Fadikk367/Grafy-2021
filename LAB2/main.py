@@ -1,5 +1,7 @@
 from graphs.Algorithms import Algorithms
 from graphs.Graph import Node, Edge, Graph, AdjacencyMatrix, AdjacencyList
+import random
+
 
 if __name__ == '__main__':
 	A = Node(0)
@@ -7,6 +9,7 @@ if __name__ == '__main__':
 	C = Node(2)
 	D = Node(3)
 	E = Node(4)
+
 	nodes = {A, B, C, D, E}
 
 	a = Edge(A, B)
@@ -28,11 +31,14 @@ if __name__ == '__main__':
 	# print(AdjacencyMatrix(graph))
 	adj_list = AdjacencyList(graph)
 
-	restored = Graph.from_adjacency_list(adj_list)
-
-	print(restored)
 
 	# for node in adj_list.list:
 	#     print(str(node) + str([str(n) for n in adj_list.list[node]]))
+	
+	#print(Algorithms.degree_seq_to_graph([1, 1, 1, 1]))
+
 	print("\n\n")
-	print(Algorithms.degree_seq_to_graph([1, 1, 1, 1]))
+	eulerian_graph = Algorithms.create_random_eulerian2(5)
+	print(eulerian_graph)
+
+	AdjacencyList.find_euler_path(AdjacencyList(eulerian_graph), Node(0))
