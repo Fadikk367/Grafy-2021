@@ -1,4 +1,6 @@
 from .Graph import *
+import random, copy
+
 
 class Algorithms:
 
@@ -33,6 +35,7 @@ class Algorithms:
 		return count
 
 
+	@staticmethod
 	def degree_seq_to_graph(Arr):
 		A = Arr.copy()
 		A.sort(reverse=True)
@@ -46,7 +49,17 @@ class Algorithms:
 					A[i] -= 1
 					A[j] -= 1
 					edges.append(Edge(nodes[i], nodes[j]))
-		return Graph(nodes, edges)
+		return Graph(edges, nodes)
 
 
+	@staticmethod
+	def create_random_eulerian(n):
+		if n < 2:
+			return None
+		arr = [random.randrange(0, n+2, 2) for i in range(n)]
+		while not Algorithms.is_degree_seq(arr):
+			arr = [random.randrange(0, n+2, 2) for i in range(n)]
+			print(arr)
+		graph = Algorithms.degree_seq_to_graph(arr)
+		return graph
 
