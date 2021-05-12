@@ -36,19 +36,26 @@ class Edge:
 
     def __eq__(self, other):
         # TODO
-        # return (
-        #     (self.nodes[0] == other.nodes[0] and self.nodes[1] == other.nodes[1]) or
-        #     (self.nodes[1] == other.nodes[0] and self.nodes[0] == other.nodes[1])
-        # )
-        return self.nodes[0] == other.nodes[0] and self.nodes[1] == other.nodes[1]
+        return (
+            (self.nodes[0] == other.nodes[0] and self.nodes[1] == other.nodes[1]) or
+            (self.nodes[1] == other.nodes[0] and self.nodes[0] == other.nodes[1])
+        )
+        # return self.nodes[0] == other.nodes[0] and self.nodes[1] == other.nodes[1]
 
     def has_common_node_with(self, other) -> bool:
-        return (
-            self.nodes[0] == other.nodes[0] or
-            self.nodes[0] == other.nodes[1] or
-            self.nodes[1] == other.nodes[0] or
+        # return (
+        #     self.nodes[0] == other.nodes[0] or
+        #     self.nodes[0] == other.nodes[1] or
+        #     self.nodes[1] == other.nodes[0] or
+        #     self.nodes[1] == other.nodes[1]
+        # )
+
+        return any([
+            self.nodes[0] == other.nodes[0],
+            self.nodes[0] == other.nodes[1],
+            self.nodes[1] == other.nodes[0],
             self.nodes[1] == other.nodes[1]
-        )
+        ])
 
 
 class Graph:
@@ -74,17 +81,29 @@ class Graph:
 
     @staticmethod
     def from_adjacency_matrix(adjacency_matrix) -> Graph:
-        nodes = set([Node(i) for i in range(len(adjacency_matrix.matrix[0]))])
+        nodes = set([Node(i) for i in range(len(adjacency_matrix[0]))])
 
         edges = []
 
-        for i, _ in enumerate(adjacency_matrix.matrix):
-            for j, value in enumerate(adjacency_matrix.matrix[i]):
+        for i, _ in enumerate(adjacency_matrix):
+            for j, value in enumerate(adjacency_matrix[i]):
 
                 if value == 1 and j > i:
                     edges.append(Edge(Node(i), Node(j)))
 
         return Graph(edges, nodes)
+
+    @staticmethod
+    def from_file(path) -> Graph:
+        adjacency_matrix = []
+
+        with open(path, 'r') as file:
+            rows = file.read().split('\n')
+
+            for row in rows:
+                adjacency_matrix.append([int(cell) for cell in row.split(' ')])
+
+        return Graph.from_adjacency_matrix(adjacency_matrix)
 
     def __str__(self):
         separator = ", "
@@ -105,20 +124,35 @@ class Graph:
     def has_edge(self, edge: Edge) -> bool:
         return edge in self.edges
 
-    def randomize(self, permutations):
+    def randomize(self, permutations=5):
+        # iter = 0
         for i in range(permutations):
             while True:
+                # iter += 1
                 (edge_a, edge_b) = random.sample(self.edges, 2)
+                # print(f"\n{iter}) selected edges:")
+                # print(str(edge_a) + ", " + str(edge_b))
 
                 are_edges_separated = not edge_a.has_common_node_with(edge_b)
+                # print("are separated:")
+                # print(are_edges_separated)
 
                 (node_a_first, node_a_second) = edge_a.nodes
                 (node_b_first, node_b_second) = edge_b.nodes
 
                 new_edge_a = Edge(node_a_first, node_b_second)
                 new_edge_b = Edge(node_a_second, node_b_first)
+                # print("New edges:")
+                # print(str(new_edge_a) + ", " + str(new_edge_b))
 
                 are_new_edges_not_duplicated = not self.has_edge(new_edge_a) and not self.has_edge(new_edge_b)
+                # print("Is first edge duplicated:")
+                # print(self.has_edge(new_edge_a))
+                # print("Is second edge duplicated:")
+                # print(self.has_edge(new_edge_b))
+
+                # if iter > 5:
+                #     break
 
                 if are_edges_separated and are_new_edges_not_duplicated:
                     self.remove_edge(edge_a)
@@ -129,25 +163,54 @@ class Graph:
 
                     break
 
-    def hamiltonian_cycle(self, graph, v=0, cycle=None):
+    @staticmethod
+    def hamiltonian_cycle(graph, v=None, cycle=None):
+        adjacency_list = AdjacencyList(graph)
+        nodes = adjacency_list.get_nodes()
+
         if cycle is None:
             cycle = []
+        if v is None:
+            v = nodes[0]
 
-        nodes = AdjacencyList(graph).list
+        # print(f"current node: {v}")
+        if v not in set(cycle):
+            cycle.append(v)
+            # print(f"visit {v}")
 
-        # if v not in set(cyc)
+            if len(cycle) == len(nodes): # we have a hamilton's path
+                closing_edge = Edge(Node(cycle[0]), Node(cycle[-1]))
 
+                if graph.has_edge(closing_edge): # check if there is an connection between last node in path and start node
+                    cycle.append(cycle[0])
+                    return cycle
+                else:
+                    cycle.pop()
+                    return None
+            else:
+                # print(f"v neighbours: {adjacency_list.get_neighbours(v)}")
+                for neighbour in adjacency_list.get_neighbours(v):
+                    cycle_copy = cycle[:]
+                    hamiltonian_candidate = Graph.hamiltonian_cycle(graph, neighbour, cycle_copy)
+                    if hamiltonian_candidate is not None:
+                        return hamiltonian_candidate
 
 
 class AdjacencyList:
     def __init__(self, graph: Graph):
         self.list = {key.id: [] for key in graph.nodes}
-        print(self.list)
+
         for edge in graph.edges:
             (first_node, second_node) = edge.nodes
 
             self.list[first_node.id].append(second_node)
             self.list[second_node.id].append(first_node)
+
+    def get_nodes(self):
+        return list(self.list.keys())
+
+    def get_neighbours(self, node_id):
+        return [node.id for node in self.list[node_id]]
 
 
 class AdjacencyMatrix:
@@ -172,36 +235,43 @@ class AdjacencyMatrix:
 
 
 if __name__ == "__main__":
-    A = Node(0)
-    B = Node(1)
-    C = Node(2)
-    D = Node(3)
-    E = Node(4)
-    nodes = {A, B, C, D, E}
+    # A = Node(0)
+    # B = Node(1)
+    # C = Node(2)
+    # D = Node(3)
+    # E = Node(4)
+    # nodes = {A, B, C, D, E}
+    #
+    # a = Edge(A, B)
+    # b = Edge(B, C)
+    # c = Edge(C, D)
+    # d = Edge(D, E)
+    # # e = Edge(E, A)
+    # edges = [a, b, c, d]
 
-    a = Edge(A, B)
-    b = Edge(A, C)
-    c = Edge(A, D)
-    d = Edge(A, E)
-    e = Edge(D, E)
-    edges = [a, b, c, d, e]
-
-    graph = Graph(edges, nodes)
+    # graph = Graph(edges, nodes)
+    graph = Graph.from_file('matrix.txt')
+    print(graph)
     print(AdjacencyMatrix(graph))
+
+    print(Graph.hamiltonian_cycle(graph))
+    #
+    # adj_list = AdjacencyList(graph)
+    # for node in adj_list.list:
+    #     print(str(node) + str([str(n) for n in adj_list.list[node]]))
 
     # adjacency_matrix = AdjacencyMatrix(graph)
     # print(adjacency_matrix)
     #
     # restored = Graph.from_adjacency_matrix(adjacency_matrix)
     # print(restored)
-    # graph.randomize(5)
+    # graph.randomize(100)
     # print(AdjacencyMatrix(graph))
-    adj_list = AdjacencyList(graph)
+    #
+    # restored = Graph.from_adjacency_list(adj_list)
 
-    restored = Graph.from_adjacency_list(adj_list)
+    # print(restored)
+    # print(AdjacencyMatrix(graph))
 
-    print(restored)
 
-    # for node in adj_list.list:
-    #     print(str(node) + str([str(n) for n in adj_list.list[node]]))
 
