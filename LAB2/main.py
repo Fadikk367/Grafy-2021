@@ -38,7 +38,7 @@ if __name__ == '__main__':
 	#print(Algorithms.degree_seq_to_graph([1, 1, 1, 1]))
 
 	print("\n\n")
-	eulerian_graph = Algorithms.create_random_eulerian2(5)
+	eulerian_graph = Algorithms.create_random_eulerian(5)
 	print(eulerian_graph)
 
 	AdjacencyList.find_euler_path(AdjacencyList(eulerian_graph), Node(0))
