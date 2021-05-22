@@ -2,10 +2,23 @@
 
 ## Projekt 2
 
-W interakcję z programem wchodzimy za pomocą interfejsu konsolowego. Ogólna postać komend wygląda następująco:
+W interakcję z programem wchodzimy za pomocą interfejsu konsolowego. 
+
+Uruchomienie:
+```
+$ python main.py
+```
+
+> Wymagana wersja pythona: 3.8+.
+
+> Brak potrzeby instalowania dodatkowych dependencji.
+
+Graficzną reprezentację grafów można obejrzeć za pomocą aplikacji z projektu nr 1. Instrukcja uruchamiania znajduje się w pliku README w katalogu LAB1
+
+Ogólna postać komend wygląda następująco:
 
 ```
-$> <operacja> <args> --in <data_source> <(?)filename> <data type> --out <data_destination>
+$ <operacja> <args> --in <data_source> <(?)filename> <data type> --out <data_destination>
 ```
 gdzie:
 
@@ -13,26 +26,26 @@ gdzie:
 * **args** argumenty, któe zostaną przekazane bezpośrednio do resolvera (funkcji przyjmującej wczytane dane, wywołującej odpowiednią metodą algorytmu oraz zwracajacej rezultat)
 * **--in** to flaga która oznacza rozpoczącie ciagu argumentó dotyczących wejścia programu
 * **data_source** rodzaj wejścia, którego będą brane dane, mogą to być np:
-  * -f/--file => dane wejściowe branę będą z pliku (dla tego wejścia kolejnym oczekiwanym argumentem jest naturalnei ścieżka do konkretnego pliku)
+  * -f/--file => dane wejściowe branę będą z pliku (dla tego wejścia kolejnym oczekiwanym argumentem jest naturalnie ścieżka do konkretnego pliku)
   * -c/--console => dane oczekiwane będą na konsoli
-* **filename** argument wprowadzany tylko jeśli źródłęm danych jest plik, oznacza naturalnie ścieżkę do pliku z danymi
+* **filename** argument wprowadzany tylko jeśli źródłem danych jest plik, oznacza naturalnie ścieżkę do pliku z danymi
 * **data_type** typ danych wejścowych:
   * --am => macierz sąsiedztwa
   * --im => macierz incydencji
   * --al => lista sąsiedztwa
   * --gseq => ciąg graficzny
   * --plain => dane surowe, nie będą w żadnej sposób przetwarzane ani transformowane, w tym przypadku funkcje resolvera odpowiada za wyłuskanie z nich informacji
-* **--out** flaga oznaczające jednocześnie koniec parametrów wejścia oraz początek parametró wyjścia
+* **--out** flaga oznaczająca jednocześnie koniec parametrów wejścia oraz początek parametrów wyjścia
 * **data_destination** rodzaj wyjścia, do którego będą przekierowane dane wyjściowe, mogą to być analogicznie jak dla data_source:
   * -f/--file => dane wyjściowe zapisane zostaną w pliku (dla tej flagi kolejnym oczekiwanym argumentem jest naturalnie ścieżka z nazwą pliku)
   * -c/--console => rezultat programu wypisany zostanie na konsoli
-  * -i/--img => wyjście zaprezentowane zostanei w postaci graficznej (JESZCZE NIEZAIMPLEMENTOWANE) 
+  * -i/--img => wyjście zaprezentowane zostanei w postaci graficznej (TODO) 
 
 
 Dodatkowo dostępne są dwie komendy pomocnicze:
 * help => listuje dostępne w programie operacje
 * exit => kończy działanie programu
-* help <nazwa_operacji> => *TODO:* listuje dostępne zródła i typy danych wejściowych oraz możliwości wyjścia dla konkretnej operacji
+* help <nazwa_operacji> => listuje dostępne zródła i typy danych wejściowych oraz możliwości wyjścia dla konkretnej operacji (TODO)
 
 
 > ### UWAGA
@@ -40,7 +53,7 @@ Dodatkowo dostępne są dwie komendy pomocnicze:
 
 ## Przykłady (v1.0.0)
 
-Poniżej znajduje się spis aktualnei dostępnych operacji wraz z obsługiwanymi dla nich parametrami. Dodatkowo zamieszczone zostały screen shoty z przykłądami ich użycia.
+Poniżej znajduje się spis aktualnie dostępnych operacji wraz z obsługiwanymi dla nich parametrami. Dodatkowo zamieszczone zostały screen shoty z przykłądami ich użycia.
 
 ### 1. sequence
 
@@ -67,7 +80,7 @@ data_destination: -c, --console, -f, --file
 Dla grafu pełnego:
 ![przykład](./docs/randomize2.png)
 
-### 3. cmponents
+### 3. components
 
 data_source: -f, --file
 
@@ -101,6 +114,7 @@ data_destination: -c, --console, -f, --file
 ![przykład](./docs/k_regular2.png)
 
 Zawartość pliku examples/k_regular_out.txt:
+
 ![przykład](./docs/k_regular3.png)
 
 
