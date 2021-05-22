@@ -39,6 +39,8 @@ class ConsoleInterface:
                 print('<command> --<data_source> --<input_type> --out --<output_target>')
             except KeyError:
                 print('Invalid or unsupported command!')
+            except IOError:
+                print('No such file or directory')
             except Error as err:
                 print(err.message)
 

@@ -46,7 +46,7 @@ class OperationStrategy:
         result = self.resolver(data, resolver_args)
 
         printer = output_targets[dest]
-        filename = 'CONSOLE'
+        filename = ""
 
         if dest == '--file' or dest == '-f':
             filename = out_args[0]

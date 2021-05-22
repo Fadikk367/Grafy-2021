@@ -40,16 +40,8 @@ class Edge:
             (self.nodes[0] == other.nodes[0] and self.nodes[1] == other.nodes[1]) or
             (self.nodes[1] == other.nodes[0] and self.nodes[0] == other.nodes[1])
         )
-        # return self.nodes[0] == other.nodes[0] and self.nodes[1] == other.nodes[1]
 
     def has_common_node_with(self, other) -> bool:
-        # return (
-        #     self.nodes[0] == other.nodes[0] or
-        #     self.nodes[0] == other.nodes[1] or
-        #     self.nodes[1] == other.nodes[0] or
-        #     self.nodes[1] == other.nodes[1]
-        # )
-
         return any([
             self.nodes[0] == other.nodes[0],
             self.nodes[0] == other.nodes[1],
@@ -101,7 +93,8 @@ class Graph:
             rows = file.read().split('\n')
 
             for row in rows:
-                adjacency_matrix.append([int(cell) for cell in row.split(' ')])
+                if row:
+                    adjacency_matrix.append([int(cell) for cell in row.split(' ')])
 
         return Graph.from_adjacency_matrix(adjacency_matrix)
 
@@ -130,26 +123,16 @@ class Graph:
             while it > 0:
                 it -= 1
                 (edge_a, edge_b) = random.sample(self.edges, 2)
-                # print(f"\n{iter}) selected edges:")
-                # print(str(edge_a) + ", " + str(edge_b))
 
                 are_edges_separated = not edge_a.has_common_node_with(edge_b)
-                # print("are separated:")
-                # print(are_edges_separated)
 
                 (node_a_first, node_a_second) = edge_a.nodes
                 (node_b_first, node_b_second) = edge_b.nodes
 
                 new_edge_a = Edge(node_a_first, node_b_second)
                 new_edge_b = Edge(node_a_second, node_b_first)
-                # print("New edges:")
-                # print(str(new_edge_a) + ", " + str(new_edge_b))
 
                 are_new_edges_not_duplicated = not self.has_edge(new_edge_a) and not self.has_edge(new_edge_b)
-                # print("Is first edge duplicated:")
-                # print(self.has_edge(new_edge_a))
-                # print("Is second edge duplicated:")
-                # print(self.has_edge(new_edge_b))
 
                 if are_edges_separated and are_new_edges_not_duplicated:
                     self.remove_edge(edge_a)
@@ -181,7 +164,7 @@ class Graph:
             if len(cycle) == len(nodes): # we have a hamilton's path
                 closing_edge = Edge(Node(cycle[0]), Node(cycle[-1]))
 
-                if graph.has_edge(closing_edge): # check if there is an connection between last node in path and start node
+                if graph.has_edge(closing_edge): # check if there is a connection between last node in path and the first one
                     cycle.append(cycle[0])
                     return cycle
                 else:

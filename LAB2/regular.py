@@ -72,7 +72,7 @@ def generate_random_regular_graph(k, n, seed=random):
         return edges_set
 
     if (n * k) % 2 != 0:
-        raise ValueError("n * d must be even")
+        raise ValueError("n * k must be even")
 
     if not 0 <= k < n:
         raise ValueError("the 0 <= d < n inequality must be satisfied")
