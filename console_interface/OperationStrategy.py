@@ -24,6 +24,10 @@ output_targets = {
 
 
 class OperationStrategy:
+    """
+    Instance of this class represents single operation in console interface (single task from given project,
+    eg. graph randomization, hamiltonian cycle finding etc.) with included arguments validation for specific operation.
+    """
     def __init__(self, name, resolver, description='Operation description...', ins=None, outs=None):
         self.name = name
         self.resolver = resolver

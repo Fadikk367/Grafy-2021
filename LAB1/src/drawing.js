@@ -41,7 +41,7 @@ export function draw(matrix) {
           ctx.stroke();
           ctx.fillStyle = "black";
           const offset = (i+1).toString().length*6;
-          ctx.fillText(i+1, coords[i].x - offset, coords[i].y + 7);
+          ctx.fillText(i, coords[i].x - offset, coords[i].y + 7);
       }
   }
 }

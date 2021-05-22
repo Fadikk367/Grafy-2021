@@ -1,6 +1,7 @@
 import unittest
 
 
+# Imports from upper directory are overwhelming...
 class Node:
     id: int
     is_visited: bool
@@ -10,7 +11,6 @@ class Node:
         self.is_visited = visited
 
     def __eq__(self, other):
-        # isinstance(other, self.__class__)
         return self.id == other.id
 
     def __hash__(self) -> int:
@@ -31,20 +31,18 @@ class Edge:
         return f"{self.nodes[0]}--{self.nodes[1]}"
 
     def __eq__(self, other):
-        # TODO
         return (
             (self.nodes[0] == other.nodes[0] and self.nodes[1] == other.nodes[1]) or
             (self.nodes[1] == other.nodes[0] and self.nodes[0] == other.nodes[1])
         )
-        # return self.nodes[0] == other.nodes[0] and self.nodes[1] == other.nodes[1]
 
     def has_common_node_with(self, other) -> bool:
-        return (
-            self.nodes[0] == other.nodes[0] or
-            self.nodes[0] == other.nodes[1] or
-            self.nodes[1] == other.nodes[0] or
+        return any([
+            self.nodes[0] == other.nodes[0],
+            self.nodes[0] == other.nodes[1],
+            self.nodes[1] == other.nodes[0],
             self.nodes[1] == other.nodes[1]
-        )
+        ])
 
 
 class TestStringMethods(unittest.TestCase):

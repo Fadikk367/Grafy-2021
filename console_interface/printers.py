@@ -10,3 +10,4 @@ def file_printer(result, filename="data/out.txt"):
 
 def image_printer(result, _):
     print('image printer')
+    pass

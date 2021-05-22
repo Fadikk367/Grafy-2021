@@ -2,8 +2,11 @@ from .errors import Error, TooFewArguments
 
 
 class ConsoleInterface:
+    """
+    Class for handling user interaction with program through system console
+    """
     def __init__(self, operations_list):
-        operations = { operation.name: operation for operation in operations_list}
+        operations = {operation.name: operation for operation in operations_list}
         default_operations = {
             'help': self.print_operations,
             'exit': self.exit

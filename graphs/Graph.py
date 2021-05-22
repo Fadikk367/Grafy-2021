@@ -6,15 +6,14 @@ from typing import List, Set, Dict
 
 
 class Node:
-    id: int
-    is_visited: bool
-
+    """
+    Representation of single node in a graph
+    """
     def __init__(self, node_id: int = 0, visited: bool = False):
         self.id = node_id
         self.is_visited = visited
 
     def __eq__(self, other):
-        # isinstance(other, self.__class__)
         return self.id == other.id
 
     def __hash__(self) -> int:
@@ -25,6 +24,9 @@ class Node:
 
 
 class Edge:
+    """
+    Representation of a two direction egde in a graph
+    """
     def __init__(self, first_node: Node, second_node: Node, is_visited: bool = False, weight: int = 0, is_weighted: bool = False):
         self.nodes = (first_node, second_node)
         self.weight = weight
@@ -35,7 +37,6 @@ class Edge:
         return f"{self.nodes[0]}--{self.nodes[1]}"
 
     def __eq__(self, other):
-        # TODO
         return (
             (self.nodes[0] == other.nodes[0] and self.nodes[1] == other.nodes[1]) or
             (self.nodes[1] == other.nodes[0] and self.nodes[0] == other.nodes[1])
@@ -51,6 +52,9 @@ class Edge:
 
 
 class Graph:
+    """
+    Graph representation as a set of nodes and list of edges
+    """
     def __init__(self, edges: List[Edge] = None, nodes: Set[Node] = None):
         self.edges = edges if edges is not None else []
         self.nodes = nodes if nodes is not None else set()
@@ -146,40 +150,11 @@ class Graph:
             if it == 0:
                 raise Exception('Graph cannot be randomized')
 
-    @staticmethod
-    def hamiltonian_cycle(graph, v=None, cycle=None):
-        adjacency_list = AdjacencyList(graph)
-        nodes = adjacency_list.get_nodes()
-
-        if cycle is None:
-            cycle = []
-        if v is None:
-            v = nodes[0]
-
-        # print(f"current node: {v}")
-        if v not in set(cycle):
-            cycle.append(v)
-            # print(f"visit {v}")
-
-            if len(cycle) == len(nodes): # we have a hamilton's path
-                closing_edge = Edge(Node(cycle[0]), Node(cycle[-1]))
-
-                if graph.has_edge(closing_edge): # check if there is a connection between last node in path and the first one
-                    cycle.append(cycle[0])
-                    return cycle
-                else:
-                    cycle.pop()
-                    return None
-            else:
-                # print(f"v neighbours: {adjacency_list.get_neighbours(v)}")
-                for neighbour in adjacency_list.get_neighbours(v):
-                    cycle_copy = cycle[:]
-                    hamiltonian_candidate = Graph.hamiltonian_cycle(graph, neighbour, cycle_copy)
-                    if hamiltonian_candidate is not None:
-                        return hamiltonian_candidate
-
 
 class AdjacencyList:
+    """
+    Graph representation as a adjacency list
+    """
     def __init__(self, graph: Graph):
         self.list = {key.id: [] for key in graph.nodes}
 
@@ -242,6 +217,9 @@ class AdjacencyList:
 
 
 class AdjacencyMatrix:
+    """
+    Graph representation as a adjacency matrix
+    """
     def __init__(self, graph: Graph):
         dimension = len(graph.nodes)
 
@@ -259,47 +237,3 @@ class AdjacencyMatrix:
             stringified += " ".join([str(i) for i in row]) + "\n"
 
         return stringified
-
-
-
-if __name__ == "__main__":
-    # A = Node(0)
-    # B = Node(1)
-    # C = Node(2)
-    # D = Node(3)
-    # E = Node(4)
-    # nodes = {A, B, C, D, E}
-    #
-    # a = Edge(A, B)
-    # b = Edge(B, C)
-    # c = Edge(C, D)
-    # d = Edge(D, E)
-    # # e = Edge(E, A)
-    # edges = [a, b, c, d]
-
-    # graph = Graph(edges, nodes)
-    graph = Graph.from_file('matrix.txt')
-    print(graph)
-    print(AdjacencyMatrix(graph))
-
-    print(Graph.hamiltonian_cycle(graph))
-    #
-    # adj_list = AdjacencyList(graph)
-    # for node in adj_list.list:
-    #     print(str(node) + str([str(n) for n in adj_list.list[node]]))
-
-    # adjacency_matrix = AdjacencyMatrix(graph)
-    # print(adjacency_matrix)
-    #
-    # restored = Graph.from_adjacency_matrix(adjacency_matrix)
-    # print(restored)
-    # graph.randomize(100)
-    # print(AdjacencyMatrix(graph))
-    #
-    # restored = Graph.from_adjacency_list(adj_list)
-
-    # print(restored)
-    # print(AdjacencyMatrix(graph))
-
-
-

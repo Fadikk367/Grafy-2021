@@ -1,11 +1,9 @@
 from graphs.Graph import Graph, AdjacencyMatrix, AdjacencyList, Node
 from graphs.Algorithms import Algorithms
 
-from .regular import generate_random_regular_graph
-
 
 def hamilton_cycle_resolver(graph: Graph, args):
-    result = Graph.hamiltonian_cycle(graph)
+    result = Algorithms.hamiltonian_cycle(graph)
 
     if result is None:
         return 'Given graph does not have an hamiltonian cycle'
@@ -20,8 +18,6 @@ def randomization_resolver(graph: Graph, args):
         return AdjacencyMatrix(graph)
     except Exception:
         return 'Graph cannot be randomized'
-
-
 
 
 def max_connected_comp_resolver(graph: Graph, args):
@@ -59,7 +55,7 @@ def k_regular_graph_resolver(args, _):
 
     [nodes, degree] = [int(num) for num in args.split(' ')]
 
-    result = generate_random_regular_graph(degree, nodes)
+    result = Algorithms.generate_random_regular_graph(degree, nodes)
     graph = Graph()
     adj_matrix = AdjacencyMatrix(graph)
     adj_matrix.matrix = result
