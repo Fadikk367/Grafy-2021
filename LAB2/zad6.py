@@ -38,7 +38,9 @@ def create_random_eulerian_resolver(data, _):
     nodes = int(data)
 
     eulerian_graph = Algorithms.create_random_eulerian(nodes)
-    euler_cycle = AdjacencyList.find_euler_path(AdjacencyList(eulerian_graph), Node(0))
+    adjacency_list = AdjacencyList(eulerian_graph)
+    print(Graph.from_adjacency_list(adjacency_list))
+    euler_cycle = AdjacencyList.find_euler_path(adjacency_list, Node(0))
     return euler_cycle
 
 
