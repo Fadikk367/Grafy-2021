@@ -66,13 +66,13 @@ class OperationStrategy:
 
         if src == '--file' or src == '-f':
             if len(in_args) != 2:
-                raise MissingSourceArguments('Missing arguments for file data source')
+                raise MissingSourceArguments('Missing arguments for file data source (must be filename and data type)')
             else:
                 src_file = in_args[0]
                 input_data_type = in_args[1]
 
                 if input_data_type not in self.supported_sources[src]:
-                    raise UnsupportedDataType('This data type is not supported for file data source')
+                    raise UnsupportedDataType('This data type is not supported for this operation')
 
         if src == '--console' or src == '-c':
             if len(in_args) != 1:
@@ -83,9 +83,9 @@ class OperationStrategy:
                 if input_data_type not in self.supported_sources[src]:
                     raise UnsupportedDataType('This data type is not supported for console data source')
 
-        # if dest == '--file' or src == '-f':
-        #     if len(out_args) < 1:
-        #         raise MissingDestinationArguments('Missing arguments in destination parameters')
+        if dest == '--file' or dest == '-f':
+            if len(out_args) < 1:
+                raise MissingDestinationArguments('Missing output filename')
 
 
 def build_options(options_tuples_list):

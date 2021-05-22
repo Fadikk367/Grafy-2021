@@ -67,6 +67,12 @@ class ConsoleInterface:
             inp_args = tokens[in_index + 1:out_index]
             out_args = tokens[out_index + 1:]
 
+            if len(inp_args) < 2:
+                raise TooFewArguments('Too few input arguments provided!')
+
+            if len(out_args) < 1:
+                raise TooFewArguments('Too few output arguments provided!')
+
             src_type = inp_args.pop(0)
             dest_type = out_args.pop(0)
 
