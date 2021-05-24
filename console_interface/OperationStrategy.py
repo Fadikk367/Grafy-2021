@@ -2,12 +2,13 @@ from copy import copy
 
 from .errors import *
 
-from .readers import adjacency_matrix, incidence_matrix, adjacency_list, plain
+from .readers import adjacency_matrix, incidence_matrix, adjacency_list, plain, cost_matrix
 from .printers import console_printer, file_printer, image_printer
 
 
 readers_map = {
     '--am': adjacency_matrix,
+    '--cm': cost_matrix,
     '--im': incidence_matrix,
     '--al': adjacency_list,
     '--plain': plain
