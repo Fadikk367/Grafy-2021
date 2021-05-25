@@ -1,5 +1,8 @@
 from .Graph import Graph, AdjacencyList, Node, Edge
+from queue import PriorityQueue
+
 import random, copy
+import math
 from collections import defaultdict
 
 
@@ -208,3 +211,63 @@ class Algorithms:
 
 		return adjacency_matrix_from_edges_set(result, n)
 
+	@staticmethod
+	def dijkstra(graph: Graph, start_node):
+		# init
+		d_s = [math.inf for node in graph.nodes]
+		p_s = [None for node in graph.nodes]
+		d_s[start_node] = 0
+
+		unvisited_nodes = PriorityQueue()
+		for i, v in enumerate(d_s):
+			unvisited_nodes.put((v, i))
+
+		while not unvisited_nodes.empty():
+			distance, node_id = unvisited_nodes.get()
+			# print(f"dist: {distance}, node_id: {node_id}")
+			neighbours = graph.get_neighbours(node_id)
+			# print(f"neighbours: {neighbours}")
+			for neighbour in neighbours:
+				edge = graph.get_edge_with_nodes(node_id, neighbour.id)
+				# print(f"edge: {edge}")
+
+				if d_s[neighbour.id] > d_s[node_id] + edge.weight:
+					d_s[neighbour.id] = d_s[node_id] + edge.weight
+					p_s[neighbour.id] = node_id
+
+					updated_unvisited_nodes = PriorityQueue()
+					for v, i in unvisited_nodes.queue:
+						if i == neighbour.id:
+							v = d_s[node_id] + edge.weight
+						updated_unvisited_nodes.put((v, i))
+					unvisited_nodes = updated_unvisited_nodes
+
+		return d_s, p_s
+
+	@staticmethod
+	def distance_matrix(graph: Graph):
+		matrix = []
+
+		for i, node in enumerate(graph.nodes):
+			d_s, _ = Algorithms.dijkstra(graph, i)
+			matrix.append(d_s)
+
+		return matrix
+
+	@staticmethod
+	def graph_center(graph: Graph):
+		distance_matrix = Algorithms.distance_matrix(graph)
+		row_sums = [sum(row) for row in distance_matrix]
+		min_row_sum = min(row_sums)
+		center_node_id = row_sums.index(min_row_sum)
+
+		return center_node_id
+
+	@staticmethod
+	def graph_minimax_center(graph: Graph):
+		distance_matrix = Algorithms.distance_matrix(graph)
+		row_maxes = [max(row) for row in distance_matrix]
+		minimax_distance = min(row_maxes)
+		minimax_node_id = row_maxes.index(minimax_distance)
+
+		return minimax_node_id
