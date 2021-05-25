@@ -97,8 +97,8 @@ class Graph:
         for i, _ in enumerate(adjacency_matrix):
             for j, value in enumerate(adjacency_matrix[i]):
 
-                if value > 0 and j > i:
-                    edges.append(Edge(Node(i), Node(j), weight=value, is_weighted=True))
+                if value == 1 and j > i:
+                    edges.append(Edge(Node(i), Node(j)))
 
         return Graph(edges, nodes)
 

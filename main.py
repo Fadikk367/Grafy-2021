@@ -5,9 +5,7 @@ from console_interface.enums import DataTypes, DataSources, DataDestinations
 from LAB2.zad6 import hamilton_cycle_resolver, randomization_resolver, max_connected_comp_resolver, \
     create_random_eulerian_resolver, sequence_to_graph_resolver, k_regular_graph_resolver
 
-from LAB3.zad2 import dijkstra_resolver, distance_matrix_resolver, center_resolver
-from LAB3.resolvers import random_weighted_graph_resolver
-
+from LAB3.resolvers import random_weighted_graph_resolver, dijkstra_resolver, distance_matrix_resolver, center_resolver
 
 
 if __name__ == "__main__":
