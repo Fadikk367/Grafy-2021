@@ -105,11 +105,9 @@ class Graph:
         edges = []
 
         for i, _ in enumerate(cost_matrix):
-            # print(f"{i}) - {_}")
             for j, value in enumerate(cost_matrix[i]):
-                # print(f"{j} - {value}")
-                if value != math.inf and j > i:
-                    edges.append(Edge(Node(i), Node(j), False, value, True))
+                if value > 0 and j > i:
+                    edges.append(Edge(Node(i), Node(j), weight=value, is_weighted=True))
 
         return Graph(edges, nodes)
 

@@ -13,7 +13,7 @@ def cost_matrix(filename):
 
         for row in data.split('\n'):
             if row:
-                matrix.append([float(cell) for cell in row.split(' ')])
+                matrix.append([int(cell) for cell in row.split(' ')])
 
         return Graph.from_cost_matrix(matrix)
 

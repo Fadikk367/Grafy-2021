@@ -242,31 +242,16 @@ class Algorithms:
 						updated_unvisited_nodes.put((v, i))
 					unvisited_nodes = updated_unvisited_nodes
 
-		# print(f"start: {start_node}")
-		# print(d_s)
-		# print(p_s)
-		# for node, distance in enumerate(d_s):
-		# 	prev = p_s[node]
-		# 	path = [str(node)]
-		#
-		# 	while prev is not None:
-		# 		path.append(str(prev))
-		# 		prev = p_s[prev]
-		#
-		# 	path.reverse()
-		# 	print(f"d({node}) = {distance}, path: [{' - '.join(path)}]")
-
-		return start_node, d_s, p_s
+		return d_s, p_s
 
 	@staticmethod
 	def distance_matrix(graph: Graph):
 		matrix = []
 
 		for i, node in enumerate(graph.nodes):
-			_1, d_s, _2 = Algorithms.dijkstra(graph, i)
+			d_s, _ = Algorithms.dijkstra(graph, i)
 			matrix.append(d_s)
 
-		# print(matrix)
 		return matrix
 
 	@staticmethod
