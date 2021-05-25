@@ -6,6 +6,8 @@ from LAB2.zad6 import hamilton_cycle_resolver, randomization_resolver, max_conne
     create_random_eulerian_resolver, sequence_to_graph_resolver, k_regular_graph_resolver
 
 from LAB3.zad2 import dijkstra_resolver, distance_matrix_resolver, center_resolver
+from LAB3.resolvers import random_weighted_graph_resolver
+
 
 
 if __name__ == "__main__":
@@ -69,6 +71,13 @@ if __name__ == "__main__":
                           'Builds a graph based on given sequence',
                           build_options(
                               [(DataSources.FILE, DataTypes.COST_MATRIX)]),
+                          build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX),
+                                         (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
+        OperationStrategy('random_connected_graph',
+                          random_weighted_graph_resolver,
+                          'Generates random connected graph with given number of nodes',
+                          build_options(
+                              [(DataSources.FILE, DataTypes.PLAIN)]),
                           build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX),
                                          (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
     ]
