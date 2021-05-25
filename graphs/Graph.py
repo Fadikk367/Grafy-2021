@@ -34,7 +34,10 @@ class Edge:
         self.is_weighted = is_weighted
 
     def __str__(self):
-        return f"{self.nodes[0]}--{self.nodes[1]}"
+        if self.is_weighted:
+            return f"{self.nodes[0]}-[{self.weight}]-{self.nodes[1]}"
+        else:
+            return f"{self.nodes[0]}--{self.nodes[1]}"
 
     def __eq__(self, other):
         return (
@@ -84,8 +87,8 @@ class Graph:
         for i, _ in enumerate(adjacency_matrix):
             for j, value in enumerate(adjacency_matrix[i]):
 
-                if value == 1 and j > i:
-                    edges.append(Edge(Node(i), Node(j)))
+                if value > 0 and j > i:
+                    edges.append(Edge(Node(i), Node(j), weight=value, is_weighted=True))
 
         return Graph(edges, nodes)
 
@@ -111,6 +114,9 @@ class Graph:
 
     def add_node(self, node: Node):
         self.nodes.add(node)
+
+    def remove_node(self, node: Node):
+        self.nodes.remove(node)
 
     def add_edge(self, edge: Edge):
         self.edges.append(edge)
@@ -227,8 +233,8 @@ class AdjacencyMatrix:
 
         for edge in graph.edges:
             (start, end) = edge.nodes
-            self.matrix[start.id][end.id] = 1
-            self.matrix[end.id][start.id] = 1
+            self.matrix[start.id][end.id] = edge.weight
+            self.matrix[end.id][start.id] = edge.weight
 
     def __str__(self):
         stringified = ""
