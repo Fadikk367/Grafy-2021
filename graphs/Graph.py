@@ -1,9 +1,10 @@
-from __future__ import annotations
+import math
 import random
-from typing import List, Set, Dict
-from numpy.random import choice
 import copy
 
+from __future__ import annotations
+from typing import List, Set, Dict
+from numpy.random import choice
 
 
 class Node:
@@ -15,6 +16,9 @@ class Node:
         self.is_visited = visited
 
     def __eq__(self, other):
+        # print('node')
+        # print(self)
+        # print(other)
         return self.id == other.id
 
     def __hash__(self) -> int:
@@ -34,6 +38,9 @@ class Edge:
         self.is_visited = is_visited
         self.is_weighted = is_weighted
 
+    def has_node(self, node: Node) -> bool:
+        return self.nodes[0] == node or self.nodes[1] == node
+
     def __str__(self):
         if self.is_weighted:
             return f"{self.nodes[0]}-[{self.weight}]-{self.nodes[1]}"
@@ -41,6 +48,9 @@ class Edge:
             return f"{self.nodes[0]}--{self.nodes[1]}"
 
     def __eq__(self, other):
+        # print('edge')
+        # print(self)
+        # print(other)
         return (
             (self.nodes[0] == other.nodes[0] and self.nodes[1] == other.nodes[1]) or
             (self.nodes[1] == other.nodes[0] and self.nodes[0] == other.nodes[1])
@@ -80,14 +90,29 @@ class Graph:
         return graph
 
     @staticmethod
-    def from_adjacency_matrix(adjacency_matrix) -> Graph:
+    def from_adjacency_matrix(adjacency_matrix, is_digraph=False) -> Graph:
         nodes = set([Node(i) for i in range(len(adjacency_matrix[0]))])
 
         edges = []
 
         for i, _ in enumerate(adjacency_matrix):
             for j, value in enumerate(adjacency_matrix[i]):
-                if value != 0:
+                if value != 0 and is_digraph:
+                    edges.append(Edge(Node(i), Node(j)))
+
+                if not is_digraph and (value == 1 and j > i):
+                    edges.append(Edge(Node(i), Node(j)))
+
+        return Graph(edges, nodes)
+
+    @staticmethod
+    def from_cost_matrix(cost_matrix) -> Graph:
+        nodes = set([Node(i) for i in range(len(cost_matrix[0]))])
+        edges = []
+
+        for i, _ in enumerate(cost_matrix):
+            for j, value in enumerate(cost_matrix[i]):
+                if value > 0 and j > i:
                     edges.append(Edge(Node(i), Node(j), weight=value, is_weighted=True))
 
         return Graph(edges, nodes)
@@ -126,6 +151,25 @@ class Graph:
 
     def has_edge(self, edge: Edge) -> bool:
         return edge in self.edges
+
+    def get_edge_with_nodes(self, node_a_id: int, node_b_id: int):
+        for edge in self.edges:
+            potential_edge = Edge(Node(node_a_id), Node(node_b_id))
+
+            if edge == potential_edge:
+                return edge
+
+        return None
+
+    def get_neighbours(self, node_id: Node) -> List[Node]:
+        neighbours = []
+        for edge in self.edges:
+            if edge.nodes[0].id == node_id:
+                neighbours.append(edge.nodes[1])
+            elif edge.nodes[1].id == node_id:
+                neighbours.append(edge.nodes[0])
+
+        return neighbours
 
     def randomize(self, permutations=5):
         for i in range(permutations):
@@ -256,6 +300,9 @@ class AdjacencyMatrix:
         if not is_digraph:
             for edge in graph.edges:
                 (start, end) = edge.nodes
+                #self.matrix[start.id][end.id] = 1 if not edge.is_weighted else edge.weight
+                #self.matrix[end.id][start.id] = 1 if not edge.is_weighted else edge.weight
+                
                 self.matrix[start.id][end.id] = edge.weight
                 self.matrix[end.id][start.id] = edge.weight
         else:

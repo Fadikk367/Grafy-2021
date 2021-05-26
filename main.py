@@ -5,7 +5,7 @@ from console_interface.enums import DataTypes, DataSources, DataDestinations
 from LAB2.zad6 import hamilton_cycle_resolver, randomization_resolver, max_connected_comp_resolver, \
     create_random_eulerian_resolver, sequence_to_graph_resolver, k_regular_graph_resolver
 
-from LAB3.resolvers import random_weighted_graph_resolver
+from LAB3.resolvers import random_weighted_graph_resolver, dijkstra_resolver, distance_matrix_resolver, center_resolver
 
 from LAB4.resolvers import random_digraph_resolver, kosaraju_resolver, random_strongly_connected_component_resolver, \
     bellman_ford_resolver
@@ -53,6 +53,27 @@ if __name__ == "__main__":
                           'Finds a hamiltonian cycle on a graph',
                           build_options([(DataSources.FILE, DataTypes.ADJ_MATRIX), (DataSources.CONSOLE, DataTypes.SEQUENCE)]),
                           build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX), (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
+        OperationStrategy('dijkstra',
+                          dijkstra_resolver,
+                          'Builds a graph based on given sequence',
+                          build_options(
+                              [(DataSources.FILE, DataTypes.COST_MATRIX)]),
+                          build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX),
+                                         (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
+        OperationStrategy('distance_matrix',
+                          distance_matrix_resolver,
+                          'Builds a graph based on given sequence',
+                          build_options(
+                              [(DataSources.FILE, DataTypes.COST_MATRIX)]),
+                          build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX),
+                                         (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
+        OperationStrategy('center',
+                          center_resolver,
+                          'Builds a graph based on given sequence',
+                          build_options(
+                              [(DataSources.FILE, DataTypes.COST_MATRIX)]),
+                          build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX),
+                                         (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
         OperationStrategy('random_connected_graph',
                           random_weighted_graph_resolver,
                           'Generates random connected graph with given number of nodes',
