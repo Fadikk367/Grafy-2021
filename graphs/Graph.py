@@ -281,7 +281,6 @@ class AdjacencyMatrix:
             self.matrix[start.id][end.id] = edge.weight
             self.matrix[end.id][start.id] = edge.weight
 
-
     def __str__(self):
         stringified = ""
 

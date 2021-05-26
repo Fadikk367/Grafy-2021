@@ -66,3 +66,13 @@ def center_resolver(graph, _):
 	return f"center node id:{center}\nminimax center node id: {center_minimax}\n"
 
 
+def kruskal_resolver(graph, _):
+	minimal_spanning_tree = Algorithms.kruskal(graph)
+
+	result_str = ""
+	for row in minimal_spanning_tree:
+		result_str += f"{' '.join([str(cell) for cell in row])}\n"
+
+	return result_str
+
+
