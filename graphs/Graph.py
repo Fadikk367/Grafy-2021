@@ -1,8 +1,8 @@
-import math
+from __future__ import annotations
+
 import random
 import copy
 
-from __future__ import annotations
 from typing import List, Set, Dict
 from numpy.random import choice
 
@@ -90,18 +90,16 @@ class Graph:
         return graph
 
     @staticmethod
-    def from_adjacency_matrix(adjacency_matrix, is_digraph=False) -> Graph:
+    def from_adjacency_matrix(adjacency_matrix) -> Graph:
         nodes = set([Node(i) for i in range(len(adjacency_matrix[0]))])
 
         edges = []
 
         for i, _ in enumerate(adjacency_matrix):
             for j, value in enumerate(adjacency_matrix[i]):
-                if value != 0 and is_digraph:
-                    edges.append(Edge(Node(i), Node(j)))
-
-                if not is_digraph and (value == 1 and j > i):
-                    edges.append(Edge(Node(i), Node(j)))
+                if value != 0:
+                    # edges.append(Edge(Node(i), Node(j)))
+                    edges.append(Edge(Node(i), Node(j), weight=value, is_weighted=True))
 
         return Graph(edges, nodes)
 

@@ -1,6 +1,7 @@
 from graphs.Graph import Graph, AdjacencyMatrix
 import random
 
+
 def random_digraph_resolver(data, _):
 	n = int(data.split(' ')[0])
 	p = float(data.split(' ')[1])
@@ -11,10 +12,12 @@ def random_digraph_resolver(data, _):
 
 	return am
 
+
 def kosaraju_resolver(graph: Graph, args):
 	am = AdjacencyMatrix(graph, is_digraph=True)
 	print(am.Kosaraju())
 	return graph
+
 
 def random_strongly_connected_component_resolver(data, _):
 	def random_matrix(n, p):
@@ -49,6 +52,7 @@ def random_strongly_connected_component_resolver(data, _):
 			if adj_matrix.matrix[i][j] == 1:
 				adj_matrix.matrix[i][j] = random.choice(numbers)
 	return adj_matrix
+
 
 def bellman_ford_resolver(graph: Graph, args):
 	print(graph)
