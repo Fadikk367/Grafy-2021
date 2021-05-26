@@ -1,8 +1,9 @@
 from __future__ import annotations
-
 import random
-
 from typing import List, Set, Dict
+from numpy.random import choice
+import copy
+
 
 
 class Node:
@@ -86,8 +87,7 @@ class Graph:
 
         for i, _ in enumerate(adjacency_matrix):
             for j, value in enumerate(adjacency_matrix[i]):
-
-                if value > 0 and j > i:
+                if value != 0:
                     edges.append(Edge(Node(i), Node(j), weight=value, is_weighted=True))
 
         return Graph(edges, nodes)
@@ -155,6 +155,28 @@ class Graph:
 
             if it == 0:
                 raise Exception('Graph cannot be randomized')
+
+    def BellmanFord(self, start_node=0):
+        d = [float("Inf")] * len(self.nodes)
+        d[start_node] = 0
+
+        for _ in range(len(self.nodes) - 1):
+            for edge in self.edges:
+                node1 = edge.nodes[0]
+                node2 = edge.nodes[1]
+                weight = edge.weight
+                if d[node1.id] != float("Inf") and d[node1.id] + weight < d[node2.id]:
+                    d[node2.id] = d[node1.id] + weight
+
+
+        for edge in self.edges:
+            node1 = edge.nodes[0]
+            node2 = edge.nodes[1]
+            weight = edge.weight
+            if d[node1.id] != float("Inf") and d[node1.id] + weight < d[node2.id]:
+                return "There is a negative weight cycle!"
+
+        return d
 
 
 class AdjacencyList:
@@ -226,15 +248,20 @@ class AdjacencyMatrix:
     """
     Graph representation as a adjacency matrix
     """
-    def __init__(self, graph: Graph):
+    def __init__(self, graph: Graph, is_digraph=False):
         dimension = len(graph.nodes)
 
         self.matrix = [[0]*dimension for i in range(dimension)]
 
-        for edge in graph.edges:
-            (start, end) = edge.nodes
-            self.matrix[start.id][end.id] = edge.weight
-            self.matrix[end.id][start.id] = edge.weight
+        if not is_digraph:
+            for edge in graph.edges:
+                (start, end) = edge.nodes
+                self.matrix[start.id][end.id] = edge.weight
+                self.matrix[end.id][start.id] = edge.weight
+        else:
+            for edge in graph.edges:
+                (start, end) = edge.nodes
+                self.matrix[start.id][end.id] = edge.weight
 
     def __str__(self):
         stringified = ""
@@ -243,3 +270,75 @@ class AdjacencyMatrix:
             stringified += " ".join([str(i) for i in row]) + "\n"
 
         return stringified
+
+    def random_digraph(self, n, p):
+        self.matrix = [[0 for el in range(n)] for el in range(n)]
+        for idx_row, row in enumerate(self.matrix):
+            for idx_col, col in enumerate(row):
+                if idx_row != idx_col:
+                    self.matrix[idx_row][idx_col] = int(choice([0, 1], 1, p=(1 - p, p)))
+        return self
+
+    def DFS_visit(self, v, d, f, t):
+        t[0] += 1
+        d[v] = t[0]
+        for i in range(len(self.matrix[v])):
+            if d[i] == -1 and self.matrix[v][i] == 1:
+                self.DFS_visit(i, d, f, t)
+        t[0] += 1
+        f[v] = t[0]
+
+    def Components_R(self, nr, v, comp):
+        for i in range(len(self.matrix[v])):
+            if self.matrix[v][i] == 1 and comp[i] == -1:
+                comp[i] = nr
+                self.Components_R(nr, i, comp)
+
+    def transpose(self):
+        n = len(self.matrix[0])
+        tmp_matrix = [[0]*n for i in range(n)]
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[i])):
+                if self.matrix[i][j] == 1:
+                    tmp_matrix[j][i] = 1
+        graph = Graph()
+        am = AdjacencyMatrix(graph)
+        am.matrix = tmp_matrix
+        return am
+
+    def Kosaraju(self):
+        d = [-1 for i in range(len(self.matrix))]
+        f = copy.deepcopy(d)
+        t = [0]
+        for v in range(len(d)):
+            if d[v] == -1:
+                self.DFS_visit(v, d, f, t)
+        transposed_graph = self.transpose()
+        nr = 0
+        comp = []
+        for v in range(len(d)):
+            comp.append(-1)
+
+        nodes = [i for i in range(len(self.matrix))]
+        nodes_f_sorted_high_to_low = sorted(dict(zip(nodes, f)).items(), key=lambda kv: (-1 * kv[1], -1 * kv[0]))
+
+        for i in nodes_f_sorted_high_to_low:
+            if comp[i[0]] == -1:
+                nr += 1
+                comp[i[0]] = nr
+                transposed_graph.Components_R(nr, i[0], comp)
+
+        nodes_comp_sorted = sorted(dict(zip(nodes, comp)).items(), key=lambda kv: (kv[1], kv[0]))
+
+        tmp = nodes_comp_sorted[0][1]
+        result = ""
+        for i in nodes_comp_sorted:
+            if tmp == i[1]:
+                result += f'{i[0]} '
+            else:
+                result += f'\n{i[0]} '
+            tmp = i[1]
+
+        return result
+
+

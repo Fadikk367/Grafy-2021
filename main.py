@@ -7,6 +7,9 @@ from LAB2.zad6 import hamilton_cycle_resolver, randomization_resolver, max_conne
 
 from LAB3.resolvers import random_weighted_graph_resolver
 
+from LAB4.resolvers import random_digraph_resolver, kosaraju_resolver, random_strongly_connected_component_resolver, \
+    bellman_ford_resolver
+
 
 if __name__ == "__main__":
     operations = [
@@ -55,6 +58,34 @@ if __name__ == "__main__":
                           'Generates random connected graph with given number of nodes',
                           build_options(
                               [(DataSources.FILE, DataTypes.PLAIN)]),
+                          build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX),
+                                         (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
+        OperationStrategy('random_digraph',
+                          random_digraph_resolver,
+                          'Generates random digraph with given number of nodes and probability for edge existing',
+                          build_options(
+                              [(DataSources.FILE, DataTypes.PLAIN)]),
+                          build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX),
+                                         (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
+        OperationStrategy('kosaraju',
+                          kosaraju_resolver,
+                          'TODO',
+                          build_options(
+                              [(DataSources.FILE, DataTypes.ADJ_MATRIX)]),
+                          build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX),
+                                         (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
+        OperationStrategy('random_strongly_connected',
+                          random_strongly_connected_component_resolver,
+                          'TODO',
+                          build_options(
+                              [(DataSources.FILE, DataTypes.PLAIN)]),
+                          build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX),
+                                         (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
+        OperationStrategy('bellman_ford_0',
+                          bellman_ford_resolver,
+                          'Finds the shortest paths to other vertices',
+                          build_options(
+                              [(DataSources.FILE, DataTypes.ADJ_MATRIX)]),
                           build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX),
                                          (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
     ]
