@@ -1,4 +1,4 @@
-from .Graph import Graph, AdjacencyList, Node, Edge
+from .Graph import Graph, AdjacencyList, Node, Edge, AdjacencyMatrix
 from queue import PriorityQueue
 
 import random, copy
@@ -271,3 +271,80 @@ class Algorithms:
 		minimax_node_id = row_maxes.index(minimax_distance)
 
 		return minimax_node_id
+
+	@staticmethod
+	def kruskal(graph: Graph):
+		matrix = AdjacencyMatrix(graph).matrix
+		edge_list = Algorithms.matrix_to_list_of_edges(matrix)
+		k_set = set()
+		for e in edge_list:
+			k_set.add(e[0])
+			k_set.add(e[1])
+		k = len(k_set)
+		edges = edge_list.copy()
+		mst = []
+
+		def take_third(arr):
+			return arr[2]
+
+		def contains(edge):
+			first = False
+			second = False
+			result = False
+			for elem in mst:
+				if elem[0] == edge[0] or elem[1] == edge[0]:
+					first = True
+				if elem[0] == edge[1] or elem[1] == edge[1]:
+					second = True
+			if first and second:
+				tmp = []
+				tmp.append(edge[0])
+				size = 1
+				it = 0
+
+				while it < size:
+					for edge in mst:
+						if edge[0] == tmp[it] and edge[1] not in tmp:
+							tmp.append(edge[1])
+							size += 1
+						if edge[1] == tmp[it] and edge[0] not in tmp:
+							tmp.append(edge[0])
+							size += 1
+					it += 1
+
+				result = edge[1] in set(tmp)
+			return result
+
+		edges.sort(key=take_third)
+		for edge in edges:
+			if not contains(edge):
+				mst.append(edge)
+			if len(mst) == k - 1:
+				break;
+		return Algorithms.adjacency_matrix_from_edges_set_with_weights(mst, k)
+
+	@staticmethod
+	def adjacency_matrix_from_edges_set_with_weights(edges_set, n):
+		rows, cols = (n, n)
+		arr = []
+		for i in range(rows):
+			col = []
+			for j in range(cols):
+				col.append(0)
+			arr.append(col)
+		for edge in edges_set:
+			arr[edge[0]][edge[1]] = edge[2]
+			arr[edge[1]][edge[0]] = edge[2]
+		return arr
+
+	@staticmethod
+	def matrix_to_list_of_edges(matrix):
+		edges = []
+		for row in range(len(matrix)):
+			for col in range(row, len(matrix[row])):
+				if matrix[row][col] != 0:
+					edges.append([row, col, matrix[row][col]])
+
+		return edges
+
+
