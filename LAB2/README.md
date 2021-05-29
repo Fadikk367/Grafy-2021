@@ -1,0 +1,1 @@
+## Tutaj będą opisane dostępne komendy (tylko te z lab2) wraz z opcjami oraz przykładami użycia + jakimiś screenshotami

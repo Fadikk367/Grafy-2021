@@ -1,4 +1,4 @@
-from graphs.Graph import Node, Edge, Graph, AdjacencyMatrix
+from graphs.Graph import Graph, AdjacencyMatrix
 from graphs.Algorithms import Algorithms
 import random
 
@@ -55,16 +55,19 @@ def dijkstra_resolver(graph, _):
 
 def distance_matrix_resolver(graph, _):
 	result = Algorithms.distance_matrix(graph)
-	rows = [str(row) for row in result]
+	s = ""
 
-	return '\n'.join(rows)
+	for row in result:
+		s += f"{' '.join([str(cell) for cell in row])}\n"
+
+	return s
 
 
 def center_resolver(graph, _):
 	center = Algorithms.graph_center(graph)
 	center_minimax = Algorithms.graph_minimax_center(graph)
 
-	return f"center node id:{center}\nminimax center node id: {center_minimax}\n"
+	return f"center node id: {center}\nminimax center node id: {center_minimax}\n"
 
 
 def kruskal_resolver(graph, _):
@@ -75,5 +78,4 @@ def kruskal_resolver(graph, _):
 		result_str += f"{' '.join([str(cell) for cell in row])}\n"
 
 	return result_str
-
 

@@ -224,17 +224,16 @@ class Algorithms:
 
 		while not unvisited_nodes.empty():
 			distance, node_id = unvisited_nodes.get()
-			# print(f"dist: {distance}, node_id: {node_id}")
 			neighbours = graph.get_neighbours(node_id)
-			# print(f"neighbours: {neighbours}")
+
 			for neighbour in neighbours:
 				edge = graph.get_edge_with_nodes(node_id, neighbour.id)
-				# print(f"edge: {edge}")
 
 				if d_s[neighbour.id] > d_s[node_id] + edge.weight:
 					d_s[neighbour.id] = d_s[node_id] + edge.weight
 					p_s[neighbour.id] = node_id
 
+					# TODO optimize algorithm in order to avoid rebuilding entire priority queue
 					updated_unvisited_nodes = PriorityQueue()
 					for v, i in unvisited_nodes.queue:
 						if i == neighbour.id:
@@ -320,7 +319,7 @@ class Algorithms:
 			if not contains(edge):
 				mst.append(edge)
 			if len(mst) == k - 1:
-				break;
+				break
 		return Algorithms.adjacency_matrix_from_edges_set_with_weights(mst, k)
 
 	@staticmethod
