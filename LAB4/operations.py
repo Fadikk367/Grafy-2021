@@ -15,7 +15,7 @@ operations = [
     OperationStrategy(name='kosaraju',
                       resolver=kosaraju_resolver,
                       description='TODO',
-                      ins=build_options([(DataSources.FILE, DataTypes.ADJ_MATRIX)]),
+                      ins=build_options([(DataSources.FILE, DataTypes.DIRECTED_COST_MATRIX)]),
                       outs=build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX),
                                           (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
     OperationStrategy(name='random_strongly_connected',
@@ -27,7 +27,7 @@ operations = [
     OperationStrategy(name='bellman_ford_0',
                       resolver=bellman_ford_resolver,
                       description='Finds the shortest paths to other vertices',
-                      ins=build_options([(DataSources.FILE, DataTypes.ADJ_MATRIX)]),
+                      ins=build_options([(DataSources.FILE, DataTypes.DIRECTED_COST_MATRIX)]),
                       outs=build_options([(DataDestinations.FILE, DataTypes.ADJ_MATRIX),
                                           (DataDestinations.CONSOLE, DataTypes.ADJ_MATRIX)])),
 ]
