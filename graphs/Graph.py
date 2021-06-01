@@ -90,28 +90,39 @@ class Graph:
         return graph
 
     @staticmethod
-    def from_adjacency_matrix(adjacency_matrix) -> Graph:
+    def from_adjacency_matrix(adjacency_matrix, is_directed=False) -> Graph:
         nodes = set([Node(i) for i in range(len(adjacency_matrix[0]))])
 
         edges = []
 
-        for i, _ in enumerate(adjacency_matrix):
-            for j, value in enumerate(adjacency_matrix[i]):
-                if value != 0:
-                    # edges.append(Edge(Node(i), Node(j)))
-                    edges.append(Edge(Node(i), Node(j), weight=value, is_weighted=True))
+        if is_directed:
+            for i, _ in enumerate(adjacency_matrix):
+                for j, value in enumerate(adjacency_matrix[i]):
+                    if value != 0:
+                        edges.append(Edge(Node(i), Node(j)))
+        else:
+            for i, _ in enumerate(adjacency_matrix):
+                for j, value in enumerate(adjacency_matrix[i]):
+                    if j > i:
+                        edges.append(Edge(Node(i), Node(j)))
 
         return Graph(edges, nodes)
 
     @staticmethod
-    def from_cost_matrix(cost_matrix) -> Graph:
+    def from_cost_matrix(cost_matrix, is_directed=False) -> Graph:
         nodes = set([Node(i) for i in range(len(cost_matrix[0]))])
         edges = []
 
-        for i, _ in enumerate(cost_matrix):
-            for j, value in enumerate(cost_matrix[i]):
-                if value > 0 and j > i:
-                    edges.append(Edge(Node(i), Node(j), weight=value, is_weighted=True))
+        if is_directed:
+            for i, _ in enumerate(cost_matrix):
+                for j, value in enumerate(cost_matrix[i]):
+                    if value != 0:
+                        edges.append(Edge(Node(i), Node(j), weight=value, is_weighted=True))
+        else:
+            for i, _ in enumerate(cost_matrix):
+                for j, value in enumerate(cost_matrix[i]):
+                    if value > 0 and j > i:
+                        edges.append(Edge(Node(i), Node(j), weight=value, is_weighted=True))
 
         return Graph(edges, nodes)
 
@@ -298,11 +309,11 @@ class AdjacencyMatrix:
         if not is_digraph:
             for edge in graph.edges:
                 (start, end) = edge.nodes
-                #self.matrix[start.id][end.id] = 1 if not edge.is_weighted else edge.weight
-                #self.matrix[end.id][start.id] = 1 if not edge.is_weighted else edge.weight
+                self.matrix[start.id][end.id] = 1 if not edge.is_weighted else edge.weight
+                self.matrix[end.id][start.id] = 1 if not edge.is_weighted else edge.weight
                 
-                self.matrix[start.id][end.id] = edge.weight
-                self.matrix[end.id][start.id] = edge.weight
+                # self.matrix[start.id][end.id] = edge.weight
+                # self.matrix[end.id][start.id] = edge.weight
         else:
             for edge in graph.edges:
                 (start, end) = edge.nodes
