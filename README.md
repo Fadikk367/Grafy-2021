@@ -1,6 +1,10 @@
 # Grafy-2021
 
-## Projekt 2
+## Projekt 1
+
+LAB1 - [Instrukcja uruchomienia](https://github.com/Fadikk367/Grafy-2021/blob/main/LAB1/README.md)  
+
+## Projekty 2-4
 
 W interakcję z programem wchodzimy za pomocą interfejsu konsolowego. 
 
