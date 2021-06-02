@@ -17,8 +17,6 @@ $ python main.py
 
 > Brak potrzeby instalowania dodatkowych dependencji.
 
-Graficzną reprezentację grafów można obejrzeć za pomocą aplikacji z projektu nr 1. Instrukcja uruchamiania znajduje się w pliku README w katalogu LAB1
-
 Ogólna postać komend wygląda następująco:
 
 ```
@@ -27,23 +25,23 @@ $ <operacja> <args> --in <data_source> <(?)filename> <data type> --out <data_des
 gdzie:
 
 * **operacja** to dostępna funkcja aplikacji (czyli zadanie z projektu)
-* **args** argumenty, któe zostaną przekazane bezpośrednio do resolvera (funkcji przyjmującej wczytane dane, wywołującej odpowiednią metodą algorytmu oraz zwracajacej rezultat)
-* **--in** to flaga która oznacza rozpoczącie ciagu argumentó dotyczących wejścia programu
-* **data_source** rodzaj wejścia, którego będą brane dane, mogą to być np:
-  * -f/--file => dane wejściowe branę będą z pliku (dla tego wejścia kolejnym oczekiwanym argumentem jest naturalnie ścieżka do konkretnego pliku)
-  * -c/--console => dane oczekiwane będą na konsoli
-* **filename** argument wprowadzany tylko jeśli źródłem danych jest plik, oznacza naturalnie ścieżkę do pliku z danymi
+* **args** argumenty, któe zostaną przekazane bezpośrednio do resolvera (funkcji przyjmującej wczytane dane, wywołującej odpowiednią metodę algorytmu oraz zwracającej rezultat)
+* **--in** to flaga, która oznacza rozpoczęcie ciagu argumentów dotyczących wejścia programu
+* **data_source** rodzaj wejścia, z którego będą brane dane, mogą to być np:
+  * -f/--file => dane wejściowe brane będą z pliku (dla tego wejścia kolejnym oczekiwanym argumentem jest naturalnie ścieżka do konkretnego pliku)
+  * -c/--console => dane oczekiwane będą brane z konsoli
+* **filename** argument wprowadzany tylko, jeśli źródłem danych jest plik, oznacza naturalnie ścieżkę do pliku z danymi
 * **data_type** typ danych wejścowych:
   * --am => macierz sąsiedztwa
   * --im => macierz incydencji
   * --al => lista sąsiedztwa
   * --gseq => ciąg graficzny
-  * --plain => dane surowe, nie będą w żadnej sposób przetwarzane ani transformowane, w tym przypadku funkcje resolvera odpowiada za wyłuskanie z nich informacji
+  * --plain => dane surowe, nie będą w żaden sposób przetwarzane ani transformowane, w tym przypadku funkcje resolvera odpowiadają za    wyłuskanie z nich informacji
 * **--out** flaga oznaczająca jednocześnie koniec parametrów wejścia oraz początek parametrów wyjścia
-* **data_destination** rodzaj wyjścia, do którego będą przekierowane dane wyjściowe, mogą to być analogicznie jak dla data_source:
+* **data_destination** rodzaj wyjścia, do którego będą przekierowane dane wyjściowe, mogą to być, analogicznie jak dla data_source:
   * -f/--file => dane wyjściowe zapisane zostaną w pliku (dla tej flagi kolejnym oczekiwanym argumentem jest naturalnie ścieżka z nazwą pliku)
   * -c/--console => rezultat programu wypisany zostanie na konsoli
-  * -i/--img => wyjście zaprezentowane zostanei w postaci graficznej (TODO) 
+  * -i/--img => wyjście zaprezentowane zostanie w postaci graficznej (TODO w przyszłości) 
 
 
 Dodatkowo dostępne są dwie komendy pomocnicze:
@@ -53,88 +51,12 @@ Dodatkowo dostępne są dwie komendy pomocnicze:
 
 
 > ### UWAGA
-> Nie wszystkie zródła oraz typy danych są dostępne dla wszytskich operacji, dostępnośc jest uwarunkowana przez opcje wprowadzone w momencie instancjonowania klasy OperationStrategy i definiowana jest przez programistę w oparciu o specyfikę zadania, dostępne reprezentacje danych oraz odpowiednie readery/printery.
-
-## Przykłady (v1.0.0)
-
-Poniżej znajduje się spis aktualnie dostępnych operacji wraz z obsługiwanymi dla nich parametrami. Dodatkowo zamieszczone zostały screen shoty z przykłądami ich użycia.
-
-### 1. sequence
-
-data_source: -c, --console
-
-data_type: --gseq
-
-data_destination: -c, --console, -f, --file
-
-![przykład](./docs/sequence1.png)
-
-### 2. randomize
-
-args: liczba permutacji
-
-data_source: -f, --file
-
-data_type: --am
-
-data_destination: -c, --console, -f, --file
-
-![przykład](./docs/randomize1.png)
-
-Dla grafu pełnego:
-![przykład](./docs/randomize2.png)
-
-### 3. components
-
-data_source: -f, --file
-
-data_type: --am
-
-data_destination: -c, --console, -f, --file
-
-![przykład](./docs/components1.png)
-
-### 4. euler
-
-data_source: -f, --file
-
-data_type: --plain
-
-data_destination: -c, --console, -f, --file
-
-![przykład](./docs/euler1.png)
-Dla zawartości pliku examples/euler.txt: "6"
-
-### 5. k_regular
-
-data_source: -f, --file
-
-data_type: --plain
-
-data_destination: -c, --console, -f, --file
-
-![przykład](./docs/k_regular1.png)
-
-![przykład](./docs/k_regular2.png)
-
-Zawartość pliku examples/k_regular_out.txt:
-
-![przykład](./docs/k_regular3.png)
+> Nie wszystkie zródła oraz typy danych są dostępne dla wszystkich operacji, dostępność jest uwarunkowana przez opcje wprowadzone w momencie instancjonowania klasy OperationStrategy i definiowana jest przez programistę w oparciu o specyfikę zadania, dostępne reprezentacje danych oraz odpowiednie readery/printery. Dostępne możliwości operacji są wypisane w dokumentacji poszczególnych funkcji w plikach README.md odpowiadających projektów.
 
 
-Dla zawartości pliku examples/k_regular.txt: "12 4"
-- 12 - wierzchołków
-- 4 - stopień wierzchołków
+LAB2 - [Instrukcja obsługi operacji](https://github.com/Fadikk367/Grafy-2021/blob/main/LAB2/README.md)  
+LAB3 - [Instrukcja obsługi operacji](https://github.com/Fadikk367/Grafy-2021/blob/main/LAB3/README.md)  
+LAB4 - [Instrukcja obsługi operacji](https://github.com/Fadikk367/Grafy-2021/blob/main/LAB4/README.md)  
 
-
-### 6. hamilton
-
-data_source: -f, --file
-
-data_type: --am
-
-data_destination: -c, --console, -f, --file
-
-![przykład](./docs/hamilton1.png)
-
-![przykład](./docs/hamilton2.png)
+Graficzną reprezentację grafów z Projektu 2 można obejrzeć za pomocą aplikacji z Projektu 1.
+Graficzną reprezentację grafów z Projektów 3 i 4 na ten moment pokazaliśmy za pomocą strony [GraphOnline](graphonline.ru/en/).
