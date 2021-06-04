@@ -57,9 +57,19 @@ def distance_matrix_resolver(graph, _):
 	result = Algorithms.distance_matrix(graph)
 	s = ""
 
+	# for row in result:
+	# 	s += f"{' '.join([str(cell) for cell in row])}\n"
 	for row in result:
-		s += f"{' '.join([str(cell) for cell in row])}\n"
-
+        	for cell in row:
+            		if 10 > cell >= 0:
+                	# s += "  ".join(str(cell))
+                	s += str(cell)
+                	s += "  "
+            	else:
+                	# s += "  ".join(str(cell))
+                	s += str(cell)
+                	s += " "
+        	s += '\n'
 	return s
 
 
