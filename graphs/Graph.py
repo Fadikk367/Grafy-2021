@@ -309,12 +309,24 @@ class AdjacencyMatrix:
                 self.matrix[start.id][end.id] = edge.weight
 
     def __str__(self):
-        stringified = ""
+        # stringified = ""
 
+        # for row in self.matrix:
+        #     stringified += " ".join([str(i) for i in row]) + "\n"
+
+        # return stringified
+        s = ""
         for row in self.matrix:
-            stringified += " ".join([str(i) for i in row]) + "\n"
-
-        return stringified
+            for cell in row:
+                if 10 > cell >= 0:
+                    # s += "  ".join(str(cell))
+                    s += str(cell)
+                    s += "  "
+                else:
+                    s += str(cell)
+                    s += " "
+            s += '\n'
+        return s
 
     def random_digraph(self, n, p):
         self.matrix = [[0 for el in range(n)] for el in range(n)]
