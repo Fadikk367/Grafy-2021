@@ -97,6 +97,8 @@ def build_options(options_tuples_list):
 
     for (srcs_dests, data_types) in options_tuples_list:
         for src_dest in srcs_dests:
-            options[src_dest] = copy(data_types)
-
+            if src_dest in options.keys():
+                options[src_dest] = options[src_dest] + copy(data_types)
+            else:
+                options[src_dest] = copy(data_types)
     return options
