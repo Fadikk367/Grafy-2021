@@ -3,74 +3,52 @@ import re
 from graphs.Graph import Graph
 
 
+def parse_matrix(data):
+    matrix = []
+
+    for line in data.split('\n'):
+        if line:
+            tokens = re.split('\s+', line)
+            row = []
+            for token in tokens:
+                if len(token) > 0:
+                    row.append(int(token))
+
+            matrix.append(row)
+
+    return matrix
+
+
 def adjacency_matrix(filename):
-    adj_matrix = []
-
     with open(filename, 'r') as file:
-        rows = file.read().split('\n')
+        data = file.read()
 
-        for row in rows:
-            if row:
-                adj_matrix.append([int(cell) for cell in row.split(' ')])
-
-    return Graph.from_adjacency_matrix(adj_matrix)
+        adj_matrix = parse_matrix(data)
+        return Graph.from_adjacency_matrix(adj_matrix)
 
 
 def directed_adjacency_matrix(filename):
-    adj_matrix = []
-
     with open(filename, 'r') as file:
-        rows = file.read().split('\n')
+        data = file.read()
 
-        for row in rows:
-            if row:
-                adj_matrix.append([int(cell) for cell in row.split(' ')])
-
-    return Graph.from_adjacency_matrix(adj_matrix, is_directed=True)
+        adj_matrix = parse_matrix(data)
+        return Graph.from_adjacency_matrix(adj_matrix, is_directed=True)
 
 
 def cost_matrix(filename):
     with open(filename) as f:
         data = f.read()
 
-        matrix = []
-
-        for line in data.split('\n'):
-            if line:
-                tokens = re.split('\s+', line)
-                row = []
-                for token in tokens:
-                    if len(token) > 0:
-                        row.append(int(token))
-
-            matrix.append(row)
-
-        print(matrix)
-
-        return Graph.from_cost_matrix(matrix)
+        cost_mat = parse_matrix(data)
+        return Graph.from_cost_matrix(cost_mat)
 
 
 def directed_cost_matrix(filename):
     with open(filename) as f:
         data = f.read()
 
-        matrix = []
-
-        for line in data.split('\n'):
-            if line:
-                tokens = re.split('\s+', line)
-                row = []
-                for token in tokens:
-                    if len(token) > 0:
-                        row.append(int(token))
-
-                matrix.append(row)
-
-        for r in matrix:
-            print(r)
-        print()
-
-        return Graph.from_cost_matrix(matrix, is_directed=True)
+        dir_cost_mat = parse_matrix(data)
+        return Graph.from_cost_matrix(dir_cost_mat, is_directed=True)
 
 
 def incidence_matrix(filename):
