@@ -103,7 +103,7 @@ class Graph:
         else:
             for i, _ in enumerate(adjacency_matrix):
                 for j, value in enumerate(adjacency_matrix[i]):
-                    if j > i:
+                    if j > i and value == 1:
                         edges.append(Edge(Node(i), Node(j)))
 
         return Graph(edges, nodes)
@@ -182,7 +182,7 @@ class Graph:
 
     def randomize(self, permutations=5):
         for i in range(permutations):
-            it = 100
+            it = 1000
             while it > 0:
                 it -= 1
                 (edge_a, edge_b) = random.sample(self.edges, 2)
