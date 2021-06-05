@@ -328,15 +328,8 @@ class AdjacencyMatrix:
         # return stringified
         s = ""
         for row in self.matrix:
-            for cell in row:
-                if 10 > cell >= 0:
-                    # s += "  ".join(str(cell))
-                    s += str(cell)
-                    s += "  "
-                else:
-                    s += str(cell)
-                    s += " "
-            s += '\n'
+            s += f"{'  '.join([f' {cell}' if len(str(cell)) == 1 else f'{cell}' for cell in row])}\n"
+
         return s
 
     def random_digraph(self, n, p):

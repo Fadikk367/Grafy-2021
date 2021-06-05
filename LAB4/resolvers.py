@@ -55,5 +55,4 @@ def random_strongly_connected_component_resolver(data, _):
 
 
 def bellman_ford_resolver(graph: Graph, args):
-	print(graph)
 	return graph.BellmanFord()
