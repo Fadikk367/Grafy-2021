@@ -15,18 +15,17 @@ def random_digraph_resolver(data, _):
 
 def kosaraju_resolver(graph: Graph, args):
 	am = AdjacencyMatrix(graph, is_digraph=True)
-	print(am.Kosaraju())
-	return graph
+	result = am.Kosaraju()
+	return result
 
 
 def random_strongly_connected_component_resolver(data, _):
 	def random_matrix(n, p):
-		adj_matrix = [[0]*n for i in range(n)]
+		adj_matrix = [['.']*n for i in range(n)]
 
 		for i in range(n):
 			for j in range(n):
 				if i != j and random.random() < p:
-					# 0.4 - probability that edge between i and j exists
 					adj_matrix[i][j] = 1
 		return adj_matrix
 
@@ -46,7 +45,6 @@ def random_strongly_connected_component_resolver(data, _):
 		components = adj_matrix.Kosaraju().split('\n')
 
 	numbers = list(range(-5, 11))
-	numbers.remove(0)
 	for i in range(n):
 		for j in range(n):
 			if adj_matrix.matrix[i][j] == 1:
@@ -55,5 +53,29 @@ def random_strongly_connected_component_resolver(data, _):
 
 
 def bellman_ford_resolver(graph: Graph, args):
-	print(graph)
-	return graph.BellmanFord()
+	try:
+		dist, pred = graph.BellmanFord()
+	except Exception as e:
+		return str(e)
+
+	ret = "Tablica odległości: \n"
+	ret += str(dist) + "\n\n"
+
+
+	ret += "Ścieżki: \n"
+	for i in range(len(pred)):
+		if pred[i] is None:
+			pass
+		current = i
+		path = []
+		while current != None:
+			path.append(current)
+			current = pred[current]
+		ret += f'{i}: '
+		path = path[::-1]
+		for v in path:
+			ret += f'({v}) '
+		ret += f'\n'
+
+
+	return ret

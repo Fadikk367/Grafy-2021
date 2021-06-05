@@ -90,28 +90,39 @@ class Graph:
         return graph
 
     @staticmethod
-    def from_adjacency_matrix(adjacency_matrix) -> Graph:
+    def from_adjacency_matrix(adjacency_matrix, is_directed=False) -> Graph:
         nodes = set([Node(i) for i in range(len(adjacency_matrix[0]))])
 
         edges = []
 
-        for i, _ in enumerate(adjacency_matrix):
-            for j, value in enumerate(adjacency_matrix[i]):
-                if value != 0:
-                    # edges.append(Edge(Node(i), Node(j)))
-                    edges.append(Edge(Node(i), Node(j), weight=value, is_weighted=True))
+        if is_directed:
+            for i, _ in enumerate(adjacency_matrix):
+                for j, value in enumerate(adjacency_matrix[i]):
+                    if value != 0:
+                        edges.append(Edge(Node(i), Node(j)))
+        else:
+            for i, _ in enumerate(adjacency_matrix):
+                for j, value in enumerate(adjacency_matrix[i]):
+                    if j > i and value == 1:
+                        edges.append(Edge(Node(i), Node(j)))
 
         return Graph(edges, nodes)
 
     @staticmethod
-    def from_cost_matrix(cost_matrix) -> Graph:
+    def from_cost_matrix(cost_matrix, is_directed=False) -> Graph:
         nodes = set([Node(i) for i in range(len(cost_matrix[0]))])
         edges = []
 
-        for i, _ in enumerate(cost_matrix):
-            for j, value in enumerate(cost_matrix[i]):
-                if value > 0 and j > i:
-                    edges.append(Edge(Node(i), Node(j), weight=value, is_weighted=True))
+        if is_directed:
+            for i, _ in enumerate(cost_matrix):
+                for j, value in enumerate(cost_matrix[i]):
+                    if value != float('Inf'):
+                        edges.append(Edge(Node(i), Node(j), weight=value, is_weighted=True))
+        else:
+            for i, _ in enumerate(cost_matrix):
+                for j, value in enumerate(cost_matrix[i]):
+                    if value != float('Inf') and j > i:
+                        edges.append(Edge(Node(i), Node(j), weight=value, is_weighted=True))
 
         return Graph(edges, nodes)
 
@@ -171,7 +182,7 @@ class Graph:
 
     def randomize(self, permutations=5):
         for i in range(permutations):
-            it = 100
+            it = 1000
             while it > 0:
                 it -= 1
                 (edge_a, edge_b) = random.sample(self.edges, 2)
@@ -200,6 +211,7 @@ class Graph:
 
     def BellmanFord(self, start_node=0):
         d = [float("Inf")] * len(self.nodes)
+        pred = [None] * len(self.nodes)
         d[start_node] = 0
 
         for _ in range(len(self.nodes) - 1):
@@ -209,6 +221,7 @@ class Graph:
                 weight = edge.weight
                 if d[node1.id] != float("Inf") and d[node1.id] + weight < d[node2.id]:
                     d[node2.id] = d[node1.id] + weight
+                    pred[node2.id] = node1.id
 
 
         for edge in self.edges:
@@ -216,9 +229,9 @@ class Graph:
             node2 = edge.nodes[1]
             weight = edge.weight
             if d[node1.id] != float("Inf") and d[node1.id] + weight < d[node2.id]:
-                return "There is a negative weight cycle!"
+                raise Exception("There is a negative weight cycle!")
 
-        return d
+        return d, pred
 
 
 class AdjacencyList:
@@ -298,23 +311,28 @@ class AdjacencyMatrix:
         if not is_digraph:
             for edge in graph.edges:
                 (start, end) = edge.nodes
-                #self.matrix[start.id][end.id] = 1 if not edge.is_weighted else edge.weight
-                #self.matrix[end.id][start.id] = 1 if not edge.is_weighted else edge.weight
+                self.matrix[start.id][end.id] = 1 if not edge.is_weighted else edge.weight
+                self.matrix[end.id][start.id] = 1 if not edge.is_weighted else edge.weight
                 
-                self.matrix[start.id][end.id] = edge.weight
-                self.matrix[end.id][start.id] = edge.weight
+                # self.matrix[start.id][end.id] = edge.weight
+                # self.matrix[end.id][start.id] = edge.weight
         else:
             for edge in graph.edges:
                 (start, end) = edge.nodes
                 self.matrix[start.id][end.id] = edge.weight
 
     def __str__(self):
-        stringified = ""
+        # stringified = ""
 
+        # for row in self.matrix:
+        #     stringified += " ".join([str(i) for i in row]) + "\n"
+
+        # return stringified
+        s = ""
         for row in self.matrix:
-            stringified += " ".join([str(i) for i in row]) + "\n"
+            s += f"{'  '.join([f' {cell}' if len(str(cell)) == 1 else f'{cell}' for cell in row])}\n"
 
-        return stringified
+        return s
 
     def random_digraph(self, n, p):
         self.matrix = [[0 for el in range(n)] for el in range(n)]
@@ -376,12 +394,12 @@ class AdjacencyMatrix:
         nodes_comp_sorted = sorted(dict(zip(nodes, comp)).items(), key=lambda kv: (kv[1], kv[0]))
 
         tmp = nodes_comp_sorted[0][1]
-        result = ""
+        result = f"{tmp}) "
         for i in nodes_comp_sorted:
             if tmp == i[1]:
                 result += f'{i[0]} '
             else:
-                result += f'\n{i[0]} '
+                result += f'\n{i[1]}) {i[0]} '
             tmp = i[1]
 
         return result

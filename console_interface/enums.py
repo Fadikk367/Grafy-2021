@@ -1,6 +1,8 @@
 class DataTypes:
     ADJ_MATRIX = ['--am']
+    DIRECTED_ADJ_MATRIX = ['--dam']
     COST_MATRIX = ['--cm']
+    DIRECTED_COST_MATRIX = ['--dcm']
     PLAIN = ['--plain']
     ADJ_LIST = ['--al']
     INC_MATRIX = ['--im']
