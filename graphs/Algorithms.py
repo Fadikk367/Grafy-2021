@@ -260,7 +260,7 @@ class Algorithms:
 		min_row_sum = min(row_sums)
 		center_node_id = row_sums.index(min_row_sum)
 
-		return center_node_id
+		return center_node_id, min_row_sum
 
 	@staticmethod
 	def graph_minimax_center(graph: Graph):
@@ -269,7 +269,7 @@ class Algorithms:
 		minimax_distance = min(row_maxes)
 		minimax_node_id = row_maxes.index(minimax_distance)
 
-		return minimax_node_id
+		return minimax_node_id, minimax_distance
 
 	@staticmethod
 	def kruskal(graph: Graph):

@@ -58,16 +58,16 @@ def distance_matrix_resolver(graph, _):
 	s = ""
 
 	for row in result:
-		s += f"{' '.join([str(cell) for cell in row])}\n"
+		s += f"{'  '.join([f' {cell}' if len(str(cell)) == 1 else f'{cell}' for cell in row])}\n"
 
 	return s
 
 
 def center_resolver(graph, _):
-	center = Algorithms.graph_center(graph)
-	center_minimax = Algorithms.graph_minimax_center(graph)
+	center, min_row_sum = Algorithms.graph_center(graph)
+	center_minimax, minimax_distance = Algorithms.graph_minimax_center(graph)
 
-	return f"center node id: {center}\nminimax center node id: {center_minimax}\n"
+	return f"center node id: {center} with sum of {min_row_sum}\nminimax center node id: {center_minimax} with minimax distance of {minimax_distance}\n"
 
 
 def kruskal_resolver(graph, _):
@@ -75,7 +75,7 @@ def kruskal_resolver(graph, _):
 
 	result_str = ""
 	for row in minimal_spanning_tree:
-		result_str += f"{' '.join([str(cell) for cell in row])}\n"
+		result_str += f"{'  '.join([f' {cell}' if len(str(cell)) == 1 else f'{cell}' for cell in row])}\n"
 
 	return result_str
 
