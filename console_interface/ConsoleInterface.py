@@ -1,4 +1,4 @@
-from .errors import Error, TooFewArguments
+from .errors import Error, TooFewArguments, InvalidCommandStructure
 
 
 class ConsoleInterface:
@@ -36,7 +36,7 @@ class ConsoleInterface:
                     print('Terminating program...')
                     break
 
-            except ValueError as e:
+            except InvalidCommandStructure:
                 print('Invalid command structure!')
                 print('Should be:')
                 print('<command> --<data_source> --<input_type> --out --<output_target>')
@@ -60,22 +60,26 @@ class ConsoleInterface:
                 raise TooFewArguments('Too few arguments provided!')
 
             operation = tokens[0]
-            in_index = tokens.index('--in')
-            out_index = tokens.index('--out')
 
-            resolver_args = tokens[1: in_index]
-            inp_args = tokens[in_index + 1:out_index]
-            out_args = tokens[out_index + 1:]
+            try:
+                in_index = tokens.index('--in')
+                out_index = tokens.index('--out')
 
-            if len(inp_args) < 2:
-                raise TooFewArguments('Too few input arguments provided!')
+                resolver_args = tokens[1: in_index]
+                inp_args = tokens[in_index + 1:out_index]
+                out_args = tokens[out_index + 1:]
 
-            if len(out_args) < 1:
-                raise TooFewArguments('Too few output arguments provided!')
+                if len(inp_args) < 2:
+                    raise TooFewArguments('Too few input arguments provided!')
 
-            src_type = inp_args.pop(0)
-            dest_type = out_args.pop(0)
+                if len(out_args) < 1:
+                    raise TooFewArguments('Too few output arguments provided!')
 
-            strategy = self.operations[operation]
+                src_type = inp_args.pop(0)
+                dest_type = out_args.pop(0)
 
-            strategy.run(src_type, inp_args, dest_type, out_args, resolver_args)
+                strategy = self.operations[operation]
+
+                strategy.run(src_type, inp_args, dest_type, out_args, resolver_args)
+            except ValueError:
+                raise InvalidCommandStructure("Invalid command structure")
