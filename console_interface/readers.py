@@ -1,3 +1,5 @@
+import re
+
 from graphs.Graph import Graph
 
 
@@ -33,9 +35,17 @@ def cost_matrix(filename):
 
         matrix = []
 
-        for row in data.split('\n'):
-            if row:
-                matrix.append([int(cell) for cell in row.split(' ')])
+        for line in data.split('\n'):
+            if line:
+                tokens = re.split('\s+', line)
+                row = []
+                for token in tokens:
+                    if len(token) > 0:
+                        row.append(int(token))
+
+            matrix.append(row)
+
+        print(matrix)
 
         return Graph.from_cost_matrix(matrix)
 
@@ -46,9 +56,19 @@ def directed_cost_matrix(filename):
 
         matrix = []
 
-        for row in data.split('\n'):
-            if row:
-                matrix.append([int(cell) for cell in row.split(' ')])
+        for line in data.split('\n'):
+            if line:
+                tokens = re.split('\s+', line)
+                row = []
+                for token in tokens:
+                    if len(token) > 0:
+                        row.append(int(token))
+
+                matrix.append(row)
+
+        for r in matrix:
+            print(r)
+        print()
 
         return Graph.from_cost_matrix(matrix, is_directed=True)
 
