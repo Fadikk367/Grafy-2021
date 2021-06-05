@@ -8,6 +8,24 @@ from collections import defaultdict
 MAX_INT = float('Inf')
 
 
+class CostMatrix:
+    def __init__(self, graph: Graph, is_digraph=False):
+        dimension = len(graph.nodes)
+
+        self.matrix = [[math.inf] * dimension for i in range(dimension)]
+
+        if not is_digraph:
+            for edge in graph.edges:
+                (start, end) = edge.nodes
+                self.matrix[start.id][end.id] = edge.weight
+                self.matrix[end.id][start.id] = edge.weight
+
+        else:
+            for edge in graph.edges:
+                (start, end) = edge.nodes
+                self.matrix[start.id][end.id] = edge.weight
+
+
 class Algorithms:
     """
     This static methods class gathers algorithms from all projects
@@ -264,7 +282,7 @@ class Algorithms:
         min_row_sum = min(row_sums)
         center_node_id = row_sums.index(min_row_sum)
 
-        return center_node_id
+        return center_node_id, min_row_sum
 
     @staticmethod
     def graph_minimax_center(graph: Graph):
@@ -273,7 +291,7 @@ class Algorithms:
         minimax_distance = min(row_maxes)
         minimax_node_id = row_maxes.index(minimax_distance)
 
-        return minimax_node_id
+        return minimax_node_id, minimax_distance
 
     @staticmethod
     def kruskal(graph: Graph):
@@ -390,7 +408,7 @@ class Algorithms:
                 if ((sptSet[vertex] == False) and
                         (dist[vertex] > (dist[curVertex] +
                                          modifiedGraph[curVertex][vertex])) and
-                        (graph[curVertex][vertex] != 0)):
+                        (graph[curVertex][vertex] != float('Inf'))):
                     dist[vertex] = dist[curVertex] + modifiedGraph[curVertex][vertex]
 
         return dist
@@ -407,23 +425,20 @@ class Algorithms:
 
     @staticmethod
     def johnson(graph: Graph):
-        matrix = AdjacencyMatrix(graph).matrix
-        k = len(matrix)
-        edges = Algorithms.matrix_to_list_of_edges_directed(matrix)
+        k = len(graph.nodes)
+        matrix = CostMatrix(graph, is_digraph=True).matrix
 
-        # we add extra vertex
-        for i in range(k):
-            edges.append([k, i, 0])
-
-        new_matrix = Algorithms.adjacency_matrix_from_edges_set_with_weights_directed(edges, k)
-
-        new_graph = Graph.from_adjacency_matrix(new_matrix)
+        # Add extra node
+        new_node = Node(k)
+        graph.add_node(new_node)
+        for node in graph.nodes:
+            graph.add_edge(Edge(new_node, node, False, 0, True))
 
         # distances from new vertex to all others to get rid off negative edges
-        h = new_graph.BellmanFord(k)
+        h = graph.BellmanFord(k)[0]
 
         # fill with zeros
-        changed_weights = [[0 for x in range(k)] for y in range(k)]
+        changed_weights = [[float('Inf') for x in range(k)] for y in range(k)]
 
         # get rid off negative edges according to formula w(u, v) = w(u, v) + h[u] – h[v]
         for row in range(k):

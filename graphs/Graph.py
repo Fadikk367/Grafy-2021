@@ -319,7 +319,7 @@ class AdjacencyMatrix:
         else:
             for edge in graph.edges:
                 (start, end) = edge.nodes
-                self.matrix[start.id][end.id] = edge.weight
+                self.matrix[start.id][end.id] = 1 if not edge.is_weighted else edge.weight
 
     def __str__(self):
         # stringified = ""
