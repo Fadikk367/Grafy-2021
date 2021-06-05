@@ -1,4 +1,5 @@
 from graphs.Graph import Graph, AdjacencyMatrix
+from graphs.Algorithms import Algorithms
 import random
 
 
@@ -79,3 +80,16 @@ def bellman_ford_resolver(graph: Graph, args):
 
 
 	return ret
+
+
+def johnson_resolver(graph, _):
+	try:
+		result = Algorithms.johnson(graph)
+
+		result_str = ""
+		for row in result:
+			result_str += f"{'  '.join([f' {cell}' if len(str(cell)) == 1 else f'{cell}' for cell in row])}\n"
+
+		return result_str
+	except Exception as e:
+		return str(e)
