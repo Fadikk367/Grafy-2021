@@ -387,12 +387,12 @@ class AdjacencyMatrix:
         nodes_comp_sorted = sorted(dict(zip(nodes, comp)).items(), key=lambda kv: (kv[1], kv[0]))
 
         tmp = nodes_comp_sorted[0][1]
-        result = ""
+        result = f"{tmp}) "
         for i in nodes_comp_sorted:
             if tmp == i[1]:
                 result += f'{i[0]} '
             else:
-                result += f'\n{i[0]} '
+                result += f'\n{i[1]}) {i[0]} '
             tmp = i[1]
 
         return result

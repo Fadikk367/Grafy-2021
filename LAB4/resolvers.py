@@ -15,8 +15,8 @@ def random_digraph_resolver(data, _):
 
 def kosaraju_resolver(graph: Graph, args):
 	am = AdjacencyMatrix(graph, is_digraph=True)
-	print(am.Kosaraju())
-	return graph
+	result = am.Kosaraju()
+	return result
 
 
 def random_strongly_connected_component_resolver(data, _):
