@@ -116,12 +116,12 @@ class Graph:
         if is_directed:
             for i, _ in enumerate(cost_matrix):
                 for j, value in enumerate(cost_matrix[i]):
-                    if value != 0:
+                    if value != float('Inf'):
                         edges.append(Edge(Node(i), Node(j), weight=value, is_weighted=True))
         else:
             for i, _ in enumerate(cost_matrix):
                 for j, value in enumerate(cost_matrix[i]):
-                    if value > 0 and j > i:
+                    if value != float('Inf') and j > i:
                         edges.append(Edge(Node(i), Node(j), weight=value, is_weighted=True))
 
         return Graph(edges, nodes)
@@ -211,6 +211,7 @@ class Graph:
 
     def BellmanFord(self, start_node=0):
         d = [float("Inf")] * len(self.nodes)
+        pred = [None] * len(self.nodes)
         d[start_node] = 0
 
         for _ in range(len(self.nodes) - 1):
@@ -220,6 +221,7 @@ class Graph:
                 weight = edge.weight
                 if d[node1.id] != float("Inf") and d[node1.id] + weight < d[node2.id]:
                     d[node2.id] = d[node1.id] + weight
+                    pred[node2.id] = node1.id
 
 
         for edge in self.edges:
@@ -227,9 +229,9 @@ class Graph:
             node2 = edge.nodes[1]
             weight = edge.weight
             if d[node1.id] != float("Inf") and d[node1.id] + weight < d[node2.id]:
-                return "There is a negative weight cycle!"
+                raise Exception("There is a negative weight cycle!")
 
-        return d
+        return d, pred
 
 
 class AdjacencyList:

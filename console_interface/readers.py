@@ -12,7 +12,10 @@ def parse_matrix(data):
             row = []
             for token in tokens:
                 if len(token) > 0:
-                    row.append(int(token))
+                    if token == '.':
+                        row.append(float('Inf'))
+                    else:
+                        row.append(int(token))
 
             matrix.append(row)
 
