@@ -5,7 +5,7 @@ import random
 
 def random_weighted_graph_resolver(data, _):
 	def random_matrix(size, p):
-		adj_matrix = [[0]*size for i in range(size)]
+		adj_matrix = [['.']*size for i in range(size)]
 
 		for i in range(size):
 			for j in range(i, size):
@@ -18,21 +18,23 @@ def random_weighted_graph_resolver(data, _):
 	p = float(data.split(' ')[1])
 	if size < 0:
 		return "Size cannot be a negative number"
-	adj_matrix = random_matrix(size, p)
-	graph = Graph.from_adjacency_matrix(adj_matrix)
+	matrix = random_matrix(size, p)
+	graph = Graph.from_cost_matrix(matrix)
 	components = Algorithms.max_connected_comp(graph)
 	while len(components) > 1:
-		adj_matrix = random_matrix(size, p)
-		graph = Graph.from_adjacency_matrix(adj_matrix)
+		matrix = random_matrix(size, p)
+		graph = Graph.from_cost_matrix(matrix)
 		components = Algorithms.max_connected_comp(graph)
 
 	for i in range(size):
 		for j in range(i, size):
-			if adj_matrix[i][j] == 1:
-				adj_matrix[i][j] = adj_matrix[j][i] = random.randrange(1, 11)
-	graph = Graph.from_cost_matrix(adj_matrix)
-	am = AdjacencyMatrix(graph)
-	return am
+			if matrix[i][j] == 1:
+				matrix[i][j] = matrix[j][i] = random.randrange(1, 11)
+	s = ""
+	for row in matrix:
+		s += f"{'  '.join([f' {cell}' if len(str(cell)) == 1 else f'{cell}' for cell in row])}\n"
+
+	return s
 
 
 def dijkstra_resolver(graph, _):
