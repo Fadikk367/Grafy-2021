@@ -455,3 +455,66 @@ class Algorithms:
                 distance_matrix[row][col] = distance_matrix[row][col] - h[row] + h[col]
 
         return distance_matrix
+
+    @staticmethod
+    def generate_flow_network(N: int):
+        #generating layers and number of vertices in each layer
+        layers = []
+        layers.append([0])
+        count = 1
+        for i in range(0, N):
+            layers.append(list())
+            vertices_in_layer = random.randrange(2, N+1)
+            for j in range(vertices_in_layer):
+                layers[i+1].append(count)
+                count += 1
+
+        layers.append([count])
+        network = Graph(layers=layers)
+
+        for layer in layers:
+            for i in layer:
+                network.add_node(Node(i))
+
+        #edges from source to first layer
+        for i in layers[1]:
+            network.add_edge(Edge(Node(0), Node(i)))
+        
+        #random edges for each vertice in layer to random verice in next layer
+        for i in range(1, len(layers)-2):
+            for j in range(layers[i][0], layers[i][-1]+1):
+                next_layer_node = random.randrange(layers[i+1][0], layers[i+1][-1]+1)
+                if not network.has_edge(Edge(Node(j), Node(next_layer_node))):
+                    network.add_edge(Edge(Node(j), Node(next_layer_node)))
+
+        #checking if every vertice has input edge
+        for i in range(2, len(layers)-1):
+            for j in range(layers[i][0], layers[i][-1]+1):
+                connected = False
+                for edge in network.edges:
+                    nodes = edge.nodes
+                    if(nodes[1].id == j):
+                        connected = True
+                        break
+
+                if not connected:
+                    prev_layer_node = random.randrange(layers[i-1][0], layers[i-1][-1]+1)
+                    network.add_edge(Edge(Node(prev_layer_node), Node(j)))
+
+        #edges from last layer to target
+        for i in layers[-2]:
+            network.add_edge(Edge(Node(i), Node(layers[-1][0])))
+
+        #generating 2*N random edges
+        for i in range(0, 2*N):
+            while(True):
+                node1 = random.randrange(0, layers[-1][0])
+                node2 = random.randrange(1, layers[-1][-1]+1)
+                if node1 != node2 and not network.has_edge(Edge(Node(node1), Node(node2))) and not network.has_edge(Edge(Node(node2), Node(node1))):
+                    network.add_edge(Edge(Node(node1), Node(node2)))
+                    break
+
+        for edge in network.edges:
+            edge.capacity = random.randrange(1, 11)
+
+        return network

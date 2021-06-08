@@ -32,11 +32,13 @@ class Edge:
     """
     Representation of a two direction egde in a graph
     """
-    def __init__(self, first_node: Node, second_node: Node, is_visited: bool = False, weight: int = 0, is_weighted: bool = False):
+    def __init__(self, first_node: Node, second_node: Node, is_visited: bool = False, weight: int = 0, is_weighted: bool = False, capacity: int = 0, flow: int = 0):
         self.nodes = (first_node, second_node)
         self.weight = weight
         self.is_visited = is_visited
         self.is_weighted = is_weighted
+        self.capacity = capacity
+        self.flow = flow
 
     def has_node(self, node: Node) -> bool:
         return self.nodes[0] == node or self.nodes[1] == node
@@ -69,9 +71,10 @@ class Graph:
     """
     Graph representation as a set of nodes and list of edges
     """
-    def __init__(self, edges: List[Edge] = None, nodes: Set[Node] = None):
+    def __init__(self, edges: List[Edge] = None, nodes: Set[Node] = None, layers:List[List] = None):
         self.edges = edges if edges is not None else []
         self.nodes = nodes if nodes is not None else set()
+        self.layers = layers
 
     @staticmethod
     def from_adjacency_list(adjacency_list) -> Graph:

@@ -3,6 +3,7 @@ from console_interface.ConsoleInterface import ConsoleInterface
 from LAB2.operations import operations as lab2_operations
 from LAB3.operations import operations as lab3_operations
 from LAB4.operations import operations as lab4_operations
+from LAB5.operations import operations as lab5_operations
 
 
 if __name__ == "__main__":
@@ -10,6 +11,7 @@ if __name__ == "__main__":
         *lab2_operations,
         *lab3_operations,
         *lab4_operations,
+        *lab5_operations,
     ]
 
     CI = ConsoleInterface(operations)
