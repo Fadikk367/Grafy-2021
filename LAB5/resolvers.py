@@ -10,6 +10,9 @@ def generate_flow_network(data, _):
 		return "Network size should be greater than 1"
 
 	network = Algorithms.generate_flow_network(N)
+	Algorithms.ford_fulkerson(network, 0, N - 1)
+	print("network: ", network)
+	print("layers: ", network.layers)
 	graph = nx.DiGraph()
 
 	for i in range(len(network.layers)):
@@ -18,6 +21,7 @@ def generate_flow_network(data, _):
 
 	for edge in network.edges:
 		nodes = edge.nodes
+		print("edge capacity: ", edge.capacity, "edge flow: ", edge.flow)
 		graph.add_edge(nodes[0].id, nodes[1].id, capacity = edge.capacity, flow = edge.flow)
 
 	labels = {}
@@ -38,4 +42,9 @@ def generate_flow_network(data, _):
 	ret = ''
 	for edge in network.edges:
 		ret += f'{edge.nodes[0]}-->{edge.nodes[1]} cap: {edge.capacity}\n'
+
+
 	return ret
+
+
+generate_flow_network(2, 5)
