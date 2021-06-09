@@ -7,7 +7,7 @@ from .resolvers import generate_flow_network
 operations = [
     OperationStrategy(name='generate_network',
                       resolver=generate_flow_network,
-                      description='Generates random flow network with given number of layers',
+                      description='Generates random flow network with given number of layers and runs Ford-Fulkerson algorithm',
                       ins=build_options([(DataSources.FILE, DataTypes.PLAIN)]),
                       outs=build_options([(DataDestinations.CONSOLE, DataTypes.PLAIN)])),
 ]
