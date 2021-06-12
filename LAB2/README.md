@@ -18,9 +18,25 @@ Dla operacji:
 sequence --in -c --gseq --out -c
 ```
 
-i po wprowadzeniu sekwencji: ``` 5 5 4 3 2 2 1 ``` otrzymamy wynik:
+po wprowadzeniu sekwencji: 
 
-![przykład](./docs/1_1_sequence.png)
+``` 
+Enter sequence number:
+5 5 4 3 2 2 1 
+``` 
+
+otrzymamy wynik:
+
+```
+ 0   1   1   1   1   1   0
+ 1   0   1   1   1   1   0
+ 1   1   0   1   0   0   1
+ 1   1   1   0   0   0   0
+ 1   1   0   0   0   0   0
+ 1   1   0   0   0   0   0
+ 0   0   1   0   0   0   0
+
+```
 
 
 ### 2. randomize
@@ -35,17 +51,36 @@ data_destination: -c, --console, -f, --file
 
 Dla operacji:
 ```
-randomize 10 --in -f examples/matrix.txt --am --out -c
+$ randomize 1 --in -c --gseq --out -c
 ```
 
-![przykład](./docs/1_2_randomize.png)
+po wprowadzeniu sekwencji: 
+```
+Enter number sequence:
+3 3 3 3 3 3 3 3
+```
+otrzymamy wynik:
+
+```
+ 0   1   0   1   0   0   0   1
+ 1   0   1   1   0   0   0   0
+ 0   1   0   1   0   1   0   0
+ 1   1   1   0   0   0   0   0
+ 0   0   0   0   0   1   1   1
+ 0   0   1   0   1   0   1   0
+ 0   0   0   0   1   1   0   1
+ 1   0   0   0   1   0   1   0
+```
 
 Dla grafu pełnego:
 ```
 randomize 100 --in -f examples/full_graph.txt --am --out -c
 ```
 
-![przykład](./docs/1_2_randomize2.png)
+```
+Graph cannot be randomized
+$
+```
 
 
 ### 3. components
@@ -97,7 +132,22 @@ k_regular --in -f examples/regular.txt --plain --out -c
 ```
 gdzie plik examples/regular.txt zawiera "12 4" - liczbę wierzchołków oraz ich stopień,
 
-![przykład](./docs/1_5_kregular.png)
+otrzymamy wynik:
+```
+ 0   1   0   0   0   0   0   1   1   0   1   1
+ 1   0   0   1   0   1   1   0   1   0   0   0
+ 0   0   0   1   0   0   1   0   1   1   1   0
+ 0   1   1   0   1   0   0   0   0   1   0   1
+ 0   0   0   1   0   1   1   0   0   1   0   1
+ 0   1   0   0   1   0   0   1   0   1   1   0
+ 0   1   1   0   1   0   0   1   1   0   0   0
+ 1   0   0   0   0   1   1   0   0   0   1   1
+ 1   1   1   0   0   0   1   0   0   0   0   1
+ 0   0   1   1   1   1   0   0   0   0   1   0
+ 1   0   1   0   0   1   0   1   0   1   0   0
+ 1   0   0   1   1   0   0   1   1   0   0   0
+
+```
 
 
 ### 6. hamilton
