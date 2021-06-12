@@ -3,7 +3,7 @@ from copy import copy
 from .errors import *
 
 from .readers import adjacency_matrix, incidence_matrix, adjacency_list, plain, cost_matrix, directed_adjacency_matrix, \
-    directed_cost_matrix
+    directed_cost_matrix, graphical_sequence
 from .printers import console_printer, file_printer, image_printer
 
 
@@ -14,7 +14,8 @@ readers_map = {
     '--dcm': directed_cost_matrix,
     '--im': incidence_matrix,
     '--al': adjacency_list,
-    '--plain': plain
+    '--plain': plain,
+    '--gseq': graphical_sequence,
 }
 
 output_targets = {
@@ -47,9 +48,10 @@ class OperationStrategy:
             filename = in_args[0]
             reader = readers_map[in_args[1]]
             data = reader(filename)
-        elif (src == '--console' or src == '-c') and in_args[0] == '--gseq':
-            sequence = input('Enter number sequence:\n')
-            data = [int(number) for number in sequence.split(' ')]
+
+        elif src == '--console' or src == '-c':
+            reader = readers_map[in_args[0]]
+            data = reader()
 
         result = self.resolver(data, resolver_args)
 

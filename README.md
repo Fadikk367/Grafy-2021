@@ -33,7 +33,10 @@ gdzie:
 * **filename** argument wprowadzany tylko, jeśli źródłem danych jest plik, oznacza naturalnie ścieżkę do pliku z danymi
 * **data_type** typ danych wejścowych:
   * --am => macierz sąsiedztwa
+  * --dam => macierz sąsiedztwa dla grafu skierowanego
   * --im => macierz incydencji
+  * --cm => macierz kosztów
+  * --dcm => macierz kosztów dla grafu skierowanego
   * --al => lista sąsiedztwa
   * --gseq => ciąg graficzny
   * --plain => dane surowe, nie będą w żaden sposób przetwarzane ani transformowane, w tym przypadku funkcje resolvera odpowiadają za    wyłuskanie z nich informacji

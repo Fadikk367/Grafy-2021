@@ -44,12 +44,7 @@ def create_random_eulerian_resolver(data, _):
     return euler_cycle
 
 
-def sequence_to_graph_resolver(sequence, _):
-    graph = Algorithms.degree_seq_to_graph(sequence)
-
-    if graph is None:
-        return "Given sequence does not represent a valid graph"
-
+def sequence_to_graph_resolver(graph, _):
     return AdjacencyMatrix(graph)
 
 

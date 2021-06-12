@@ -1,6 +1,8 @@
 import re
 
 from graphs.Graph import Graph
+from graphs.Algorithms import Algorithms
+from .errors import Error
 
 
 def parse_matrix(data):
@@ -20,6 +22,18 @@ def parse_matrix(data):
             matrix.append(row)
 
     return matrix
+
+
+def graphical_sequence():
+    data = input('Enter number sequence:\n')
+    sequence = [int(number) for number in data.split(' ')]
+
+    graph = Algorithms.degree_seq_to_graph(sequence)
+
+    if graph is None:
+        raise Error("Given sequence does not represent a valid graph")
+
+    return graph
 
 
 def adjacency_matrix(filename):
