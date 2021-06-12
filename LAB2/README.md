@@ -43,9 +43,9 @@ otrzymamy wynik:
 
 args: liczba permutacji
 
-data_source: -f, --file
+data_source: -f, --file, -c, --console
 
-data_type: --am
+data_type: --am, --gseq (tylko dla console/c)
 
 data_destination: -c, --console, -f, --file
 
