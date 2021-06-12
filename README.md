@@ -4,7 +4,7 @@
 
 LAB1 - [Instrukcja uruchomienia](https://github.com/Fadikk367/Grafy-2021/blob/main/LAB1/README.md)  
 
-## Projekty 2-4
+## Projekty 2-5
 
 W interakcję z programem wchodzimy za pomocą interfejsu konsolowego. 
 
@@ -39,7 +39,10 @@ gdzie:
   * --dcm => macierz kosztów dla grafu skierowanego
   * --al => lista sąsiedztwa
   * --gseq => ciąg graficzny
-  * --plain => dane surowe, nie będą w żaden sposób przetwarzane ani transformowane, w tym przypadku funkcje resolvera odpowiadają za    wyłuskanie z nich informacji
+  * --plain => dane surowe, nie będą w żaden sposób przetwarzane ani transformowane, w tym przypadku funkcje resolvera odpowiadają za wyłuskanie z nich informacji
+  * --cm => macierz ważona
+  * --dam => macierz sąsiedztwa dla grafu skierowanego
+  * --dcm => macierz ważona dla grafu skierowanego
 * **--out** flaga oznaczająca jednocześnie koniec parametrów wejścia oraz początek parametrów wyjścia
 * **data_destination** rodzaj wyjścia, do którego będą przekierowane dane wyjściowe, mogą to być, analogicznie jak dla data_source:
   * -f/--file => dane wyjściowe zapisane zostaną w pliku (dla tej flagi kolejnym oczekiwanym argumentem jest naturalnie ścieżka z nazwą pliku)
@@ -60,6 +63,7 @@ Dodatkowo dostępne są dwie komendy pomocnicze:
 LAB2 - [Instrukcja obsługi operacji](https://github.com/Fadikk367/Grafy-2021/blob/main/LAB2/README.md)  
 LAB3 - [Instrukcja obsługi operacji](https://github.com/Fadikk367/Grafy-2021/blob/main/LAB3/README.md)  
 LAB4 - [Instrukcja obsługi operacji](https://github.com/Fadikk367/Grafy-2021/blob/main/LAB4/README.md)  
+LAB5 - [Instrukcja obsługi operacji](https://github.com/Fadikk367/Grafy-2021/blob/main/LAB5/README.md)  
 
 Graficzną reprezentację grafów z Projektu 2 można obejrzeć za pomocą aplikacji z Projektu 1.
 Graficzną reprezentację grafów z Projektów 3 i 4 na ten moment pokazaliśmy za pomocą strony [GraphOnline](graphonline.ru/en/).
