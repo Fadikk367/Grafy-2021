@@ -580,7 +580,7 @@ class Algorithms:
                     elif graph.get_edge_with_nodes(j.id, i.id):
                         e.append(Edge(i, j))
                         edge = graph.get_edge_with_nodes(i.id, j.id)
-                        e[-1].capacity = edge.get_flow()
+                        e[-1].capacity = edge.flow
 
                     else:
                         e.append(Edge(i, j))
