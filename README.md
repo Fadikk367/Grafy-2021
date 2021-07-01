@@ -10,12 +10,11 @@ W interakcję z programem wchodzimy za pomocą interfejsu konsolowego.
 
 Uruchomienie:
 ```
+$ pip install -r requirements.txt
 $ python main.py
 ```
 
 > Wymagana wersja pythona: 3.8+.
-
-> Brak potrzeby instalowania dodatkowych dependencji.
 
 Ogólna postać komend wygląda następująco:
 
